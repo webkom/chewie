@@ -18,6 +18,7 @@
   "homepage": "https://github.com/webkom/chewie",
   "dependencies": {
     "bailey": "0.0.13",
+    "debug": "^1.0.4",
     "express": "^4.8.5",
     "nib": "^1.0.3",
     "passport": "^0.2.0",
