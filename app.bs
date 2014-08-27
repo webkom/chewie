@@ -1,0 +1,66 @@
+import express
+import express-flash as flash
+import cookie-session as session
+import path
+import morgan as logging
+import cookie-parser as cookieParser
+import body-parser as bodyParser
+import request
+import passport
+import passport-abakus as passportAbakus
+
+import ./routes/api
+import ./routes/index
+import ./routes/auth
+
+export app
+
+app = express()
+
+app.set('views', path.join(__dirname, 'views'))
+app.set('view engine', 'jade')
+app.set('trust proxy', true)
+
+app.use(express.static(path.join(__dirname, 'public')))
+app.use(logging('dev'))
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded())
+app.use(cookieParser())
+app.use(session({ cookie: { maxAge: 60000 }, secret: 'This is top secret'}))
+
+passport.use(passportAbakus.abakusStrategy())
+passport.serializeUser(passportAbakus.serializeAbakusUser)
+passport.deserializeUser(passportAbakus.deserializeAbakusUser)
+
+app.use(passport.initialize())
+app.use(passport.session())
+
+app.use((req, res, next) ->
+    res.locals.authenticated = req.isAuthenticated()
+    next()
+)
+
+app.use('/auth', auth)
+app.use('/', index)
+app.use('/api', api)
+
+# catch 404 and forward to error handler
+app.use((req, res, next) ->
+    err = new Error('Not Found')
+    err.status = 404
+    err.template = 'error/404'
+    next(err)
+)
+
+app.use((err, req, res, next) ->
+    # istanbul ignore if
+    if app.get('env') == 'production'
+        template = 'error/production'
+    else
+        template = 'error/debug'
+    res.status(err.status or 500)
+    res.render(err.template or template, {
+        message: err.message,
+        error: err
+    })
+)
