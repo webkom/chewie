@@ -1,4 +1,31 @@
 import express
+import child_process
 export router
 
+exec = child_process.exec
 router = express.Router()
+
+deployScript = '#{__dirname}/../deploy.py'
+
+shortFeedback = 'Done!'
+
+
+# Need to add authentication middleware
+router.post('/deploy/:projectName', (req, res) ->
+  exec('#{deployScript} #{req.params.projectName}', (err, stdout, stderr) ->
+    error = err and stderr ? err + stderr : err or stderr
+    debug = req.query.debug
+
+    if error
+      res.status(500).send(error)
+    else
+      if debug
+        res.send(stdout)
+      else
+        res.send(shortFeedback)
+  )
+)
+
+router.post('/github', (req, res) ->
+
+)
