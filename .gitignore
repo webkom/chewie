@@ -25,3 +25,10 @@ build/Release
 node_modules
 
 *.js
+*.css
+
+# Python
+*.pyc
+.idea
+venv
+

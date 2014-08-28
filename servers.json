@@ -1,0 +1,22 @@
+{
+  "nerd": {
+    "hostname": "luke.abakus.no",
+    "user": "root",
+    "path": "/home/webkom/webapps/nerd"
+  },
+  "foto": {
+    "hostname": "luke.abakus.no",
+    "user": "foto",
+    "path": "/home/foto/foto.abakus.no"
+  },
+  "census": {
+    "hostname": "luke.abakus.no",
+    "user": "census",
+    "path": "/home/census/census.abakus.no"
+  },
+  "nit": {
+    "hostname": "luke.abakus.no",
+    "user": "nit",
+    "path": "/home/nit/nit"
+  }
+}
