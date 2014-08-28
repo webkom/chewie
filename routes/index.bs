@@ -1,4 +1,10 @@
 import express
 import request
 
+router = express.Router()
+
+router.get('/', (req, res) ->
+  res.send('Hi')
+)
+
 export router
