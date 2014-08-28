@@ -26,9 +26,10 @@ conf_file = 'servers.json'  # This could be an environment variable
 def get_host(project_name):
     with open(conf_file) as f:
         servers = json.load(f)
-        for hostname, projects in servers.iteritems():
-            if project_name in projects:
-                return hostname, projects[project_name]
+        hostname = servers.get(project_name)
+        if hostname:
+            return hostname
+
         raise MissingServerError(project_name)
 
 
