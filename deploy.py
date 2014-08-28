@@ -14,30 +14,30 @@ class MissingProjectNameError(Exception):
     def __init__(self):
         Exception.__init__(self, 'Missing project name argument.')
 
-
-class MissingServerError(Exception):
+class MissingProjectError(Exception):
     def __init__(self, project_name):
-        Exception.__init__(self, 'Cant\'t find a server with the project name %s' % project_name)
+        Exception.__init__(self, 'Cant\'t find a project with the project name %s' % project_name)
 
 
 conf_file = 'servers.json'  # This could be an environment variable
 
 
-def get_host(project_name):
+def get_project(project_name):
     with open(conf_file) as f:
-        servers = json.load(f)
-        hostname = servers.get(project_name)
-        if hostname:
-            return hostname
-
-        raise MissingServerError(project_name)
+        projects = json.load(f)
+        try:
+            project = projects[project_name]
+            return project
+        except KeyError:
+            raise MissingProjectError(project_name)
 
 
 def deploy_project(project_name, branch='master'):
-    env.host_string, meta_info = get_host(project_name)
-    env.user = meta_info.get('  ') or 'root'
+    project = get_project(project_name)
+    env.host_string = project['hostname']
+    env.user = project.get('user') or 'root'
 
-    with cd(meta_info['path']):
+    with cd(project['path']):
         run('git fetch && git reset --hard origin/%s' % branch)
         run('make update')
 
