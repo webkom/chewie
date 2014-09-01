@@ -1,5 +1,6 @@
 import express
 import ../deploy
+import ./handle-error as handleError
 
 export router
 
@@ -12,7 +13,7 @@ router.post('/deploy/:projectName', (req, res, next) ->
     res.send(output)
   )
   .catch((err) ->
-    next(err)
+    handleError(err, res)
   )
 )
 
