@@ -1,6 +1,8 @@
 import child_process as child
 import bluebird as Promise
 
+export deploy
+
 child_process = Promise.promisifyAll(child)
 
 deployScript = '#{__dirname}/venv/bin/python deploy.py'
@@ -22,5 +24,3 @@ deploy = (projectName, debug) ->
   , (err) ->
     throw new DeployError(err.message)
   )
-
-export deploy
