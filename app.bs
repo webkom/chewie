@@ -53,14 +53,13 @@ app.use((req, res, next) ->
 )
 
 app.use((err, req, res, next) ->
-    # istanbul ignore if
-    if app.get('env') == 'production'
-        template = 'error/production'
-    else
-        template = 'error/debug'
-    res.status(err.status or 500)
-    res.render(err.template or template, {
-        message: err.message,
-        error: err
-    })
+  if app.get('env') == 'production'
+      template = 'error/production'
+  else
+      template = 'error/debug'
+  res.status(err.status or 500)
+  res.render(err.template or template, {
+      message: err.message,
+      error: err
+  })
 )

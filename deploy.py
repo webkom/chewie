@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-
 """
 Takes a project name as the first argument and a git-branch as the second (optional).
 Finds the hostname from a config file, then uses ssh to deploy the project.
