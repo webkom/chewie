@@ -1,0 +1,26 @@
+import child_process as child
+import bluebird as Promise
+
+export deploy
+
+child_process = Promise.promisifyAll(child)
+
+deployScript = '#{__dirname}/venv/bin/python deploy.py'
+shortOutput = 'Done!'
+
+class DeployError extends Error
+  name: 'DeployError'
+
+  init: (message) ->
+    @message = message
+
+
+deploy = (projectName, debug) ->
+  return child_process.execAsync('#{deployScript} #{projectName}')
+  .spread((stdout, stderr) ->
+    if stderr
+      throw new DeployError(stderr)
+    return debug ? stdout : shortOutput
+  , (err) ->
+    throw new DeployError(err.message)
+  )

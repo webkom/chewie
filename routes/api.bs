@@ -1,28 +1,19 @@
 import express
-import child_process
+import ../deploy
+import ./handle-error as handleError
+
 export router
 
-exec = child_process.exec
 router = express.Router()
 
-deployScript = '#{__dirname}/../deploy.py'
-
-shortFeedback = 'Done!'
-
-
 # Need to add authentication middleware
-router.post('/deploy/:projectName', (req, res) ->
-  exec('#{deployScript} #{req.params.projectName}', (err, stdout, stderr) ->
-    error = err and stderr ? err + stderr : err or stderr
-    debug = req.query.debug
-
-    if error
-      res.status(500).send(error)
-    else
-      if debug
-        res.send(stdout)
-      else
-        res.send(shortFeedback)
+router.post('/deploy/:projectName', (req, res, next) ->
+  deploy(req.params.projectName, req.query.debug)
+  .then((output) ->
+    res.send(output)
+  )
+  .catch((err) ->
+    handleError(err, res)
   )
 )
 
