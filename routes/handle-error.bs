@@ -1,0 +1,5 @@
+handleError = (err, res) ->
+  res.status(500)
+  res.send(err)
+
+export handleError
