@@ -43,7 +43,7 @@ router.post('/travis', (req, res) ->
     .update(repoSlug + process.env.HOOK_TOKEN)
     .digest('hex')
 
-    if req.headers['Authorization'] == hash
+    if req.headers['Authorization'] == hash and payload.branch == 'master'
         deployAndHandle(payload.repository.name, true, res)
     else
         res.status(500).send()
