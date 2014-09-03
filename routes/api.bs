@@ -7,34 +7,44 @@ export router
 
 router = express.Router()
 
-# Need to add authentication middleware
-router.post('/deploy/:projectName', (req, res, next) ->
-    deploy(req.params.projectName, req.query.debug)
+deployAndHandle = (projectName, debug, res) ->
+    deploy(projectName, debug)
     .then((output) ->
         res.send(output)
     )
     .catch((err) ->
         handleError(err, res)
     )
+
+# Need to add authentication middleware
+router.post('/deploy/:projectName', (req, res, next) ->
+    deployAndHandle(req.params.projectName, req.query.debug, res)
 )
 
 router.post('/github', (req, res) ->
     payload = req.body
     signature = req.headers['x-hub-signature']
-    hmac = crypto.createHmac('sha1', process.env.GITHUB_HOOK_SECRET)
+    hmac = crypto.createHmac('sha1', process.env.HOOK_TOKEN)
     .update(JSON.stringify(payload))
     .digest('hex')
 
     correct = 'sha1=' + hmac
 
     if signature == correct and payload.ref == 'refs/head/master'
-        deploy(payload.repository.name, true)
-        .then((output) ->
-            res.send(output)
-        )
-        .catch((err) ->
-            handleError(err, res)
-        )
+        deployAndHandle(payload.repository.name, true, res)
+    else
+        res.status(500).send()
+)
+
+router.post('/travis', (req, res) ->
+    payload = req.body
+    repoSlug = req.headers['Travis-Repo-Slug']
+    hash = crypto.createHash('sha2')
+    .update(repoSlug + process.env.HOOK_TOKEN)
+    .digest('hex')
+
+    if req.headers['Authorization'] == hash
+        deployAndHandle(payload.repository.name, true, res)
     else
         res.status(500).send()
 )
