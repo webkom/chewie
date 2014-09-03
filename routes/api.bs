@@ -25,10 +25,11 @@ router.post('/github', (req, res) ->
     payload = req.body
     signature = req.headers['x-hub-signature']
     hmac = crypto.createHmac('sha1', process.env.HOOK_TOKEN)
-    .update(JSON.stringify(payload))
-    .digest('hex')
+    hmac.setEncoding('hex')
+    hmac.write(JSON.stringify(payload))
+    hmac.end()
 
-    correct = 'sha1=' + hmac
+    correct = 'sha1=' + hmac.read()
 
     if signature == correct and payload.ref == 'refs/head/master'
         deployAndHandle(payload.repository.name, true, res)
@@ -37,13 +38,16 @@ router.post('/github', (req, res) ->
 )
 
 router.post('/travis', (req, res) ->
-    payload = req.body
-    repoSlug = req.headers['Travis-Repo-Slug']
-    hash = crypto.createHash('sha2')
-    .update(repoSlug + process.env.HOOK_TOKEN)
-    .digest('hex')
+    payload = JSON.parse(req.body.payload)
+    repoSlug = req.headers['travis-repo-slug']
 
-    if req.headers['Authorization'] == hash and payload.branch == 'master'
+    hash = crypto.createHash('sha256')
+    hash.setEncoding('hex')
+    hash.write(repoSlug + process.env.HOOK_TOKEN)
+    hash.end()
+    correctHash = hash.read()
+
+    if req.headers['authorization'] == correctHash
         deployAndHandle(payload.repository.name, true, res)
     else
         res.status(500).send()
