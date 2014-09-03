@@ -47,7 +47,7 @@ router.post('/travis', (req, res) ->
     hash.end()
     correctHash = hash.read()
 
-    if req.headers['authorization'] == correctHash
+    if req.headers['authorization'] == correctHash and payload.branch == 'master':
         deployAndHandle(payload.repository.name, true, res)
     else
         res.status(500).send()
