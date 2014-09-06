@@ -1,4 +1,5 @@
 import express
+import crypto
 import ../deploy
 import ./handle-error as handleError
 
@@ -6,17 +7,57 @@ export router
 
 router = express.Router()
 
+deployAndHandle = (projectName, debug, res) ->
+    deploy(projectName, debug)
+    .then((output) ->
+        res.send(output)
+    )
+    .catch((err) ->
+        handleError(err, res)
+    )
+
 # Need to add authentication middleware
 router.post('/deploy/:projectName', (req, res, next) ->
-  deploy(req.params.projectName, req.query.debug)
-  .then((output) ->
-    res.send(output)
-  )
-  .catch((err) ->
-    handleError(err, res)
-  )
+    deployAndHandle(req.params.projectName, req.query.debug, res)
 )
 
-router.post('/github', (req, res) ->
+notMasterMessage = 'Received hook from a different branch than master, nothing will be done.'
 
+router.post('/github', (req, res) ->
+    payload = req.body
+    signature = req.headers['x-hub-signature']
+    hmac = crypto.createHmac('sha1', process.env.HOOK_TOKEN)
+    hmac.setEncoding('hex')
+    hmac.write(JSON.stringify(payload))
+    hmac.end()
+
+    correct = 'sha1=' + hmac.read()
+
+    if payload.ref == 'refs/heads/master'
+        if signature == correct
+            deployAndHandle(payload.repository.name, true, res)
+        else
+            res.status(403).send()
+    else
+        res.status(200).send(notMasterMessage)
+
+)
+
+router.post('/travis', (req, res) ->
+    payload = JSON.parse(req.body.payload)
+    repoSlug = req.headers['travis-repo-slug']
+
+    hash = crypto.createHash('sha256')
+    hash.setEncoding('hex')
+    hash.write(repoSlug + process.env.HOOK_TOKEN)
+    hash.end()
+    correctHash = hash.read()
+
+    if payload.branch == 'master'
+        if req.headers['authorization'] == correctHash
+            deployAndHandle(payload.repository.name, true, res)
+        else
+            res.status(403).send()
+    else
+        res.status(200).send(notMasterMessage)
 )
