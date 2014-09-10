@@ -5,7 +5,7 @@ export deploy
 
 child_process = Promise.promisifyAll(child)
 
-deployScript = '#{__dirname}/venv/bin/python deploy.py'
+deployScript = '#{__dirname}/venv/bin/python #{__dirname}/deploy.py'
 shortOutput = 'Done!'
 
 class DeployError extends Error
