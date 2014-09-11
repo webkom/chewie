@@ -4,7 +4,7 @@
     "user": "root",
     "path": "/home/webkom/webapps/nerd"
   },
-  "foto": {
+  "foto.abakus.no": {
     "hostname": "luke.abakus.no",
     "user": "foto",
     "path": "/home/foto/foto.abakus.no"
@@ -14,9 +14,20 @@
     "user": "census",
     "path": "/home/census/census.abakus.no"
   },
-  "nit": {
+  "nyitrondheimv2": {
     "hostname": "luke.abakus.no",
     "user": "nit",
     "path": "/home/nit/nit"
+  },
+  "coffee": {
+    "hostname": "luke.abakus.no",
+    "user": "webkom",
+    "path": "/home/webkom/webapps/coffee"
+  },
+  "prr": {
+    "hostname": "padme.abakus.no",
+    "user": "prr",
+    "path": "/home/prr/prr"
   }
+
 }
