@@ -3,6 +3,7 @@ Takes a project name as the first argument and a git-branch as the second (optio
 Finds the hostname from a config file, then uses ssh to deploy the project.
 """
 
+import os
 import sys
 import json
 from fabric.api import env, run, cd
@@ -16,9 +17,14 @@ class MissingProjectError(Exception):
     def __init__(self, project_name):
         Exception.__init__(self, 'Cant\'t find a project with the project name %s' % project_name)
 
+class MissingConfigFileVariableError(Exception):
+    def __init__(self, project_name):
+        Exception.__init__(self, 'Can\'t find the environment variable SERVER_CONFIG_FILE.')
 
-conf_file = 'servers.json'  # This could be an environment variable
-
+try:
+    conf_file = os.path.dirname(os.path.realpath(__file__)) + '/' + os.environ['SERVER_CONFIG_FILE']
+except KeyError as e:
+    raise MissingConfigFileVariableError()
 
 def get_project(project_name):
     with open(conf_file) as f:
