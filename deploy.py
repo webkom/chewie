@@ -44,7 +44,9 @@ def deploy_project(project_name, branch='master'):
     with cd(project['path']):
         run('git fetch && git reset --hard origin/%s' % branch)
         run('make update')
-
+        if project.get('extra_commands'):
+            for command in project['extra_commands']:
+                run(command)
 
 if __name__ == '__main__':
     try:

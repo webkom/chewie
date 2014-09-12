@@ -2,7 +2,10 @@
   "nerd": {
     "hostname": "luke.abakus.no",
     "user": "root",
-    "path": "/home/webkom/webapps/nerd"
+    "path": "/home/webkom/webapps/nerd",
+    "extra_commands": [
+        "service uwsgi reload"
+    ]
   },
   "foto.abakus.no": {
     "hostname": "luke.abakus.no",
