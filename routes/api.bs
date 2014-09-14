@@ -21,7 +21,10 @@ router.post('/deploy/:projectName', (req, res, next) ->
     deployAndHandle(req.params.projectName, req.query.debug, res)
 )
 
-notMasterMessage = 'Received hook from a different branch than master, nothing will be done.'
+messages = {
+    notMaster: 'Received hook from a different branch than master, nothing will be done.'
+    handledByTravis: 'Received hook from a public project, which is handled by Travis. Nothing will be done.'
+}
 
 router.post('/github', (req, res) ->
     payload = req.body
@@ -33,13 +36,15 @@ router.post('/github', (req, res) ->
 
     correct = 'sha1=' + hmac.read()
 
-    if payload.ref == 'refs/heads/master'
-        if signature == correct
-            deployAndHandle(payload.repository.name, true, res)
+    if signature == correct
+        if payload.ref != 'refs/heads/master'
+            res.status(200).send(messages.notMaster)
+        elif payload.repository and not payload.repository.private
+            res.status(200).send(messages.handledByTravis)
         else
-            res.status(403).send()
+            deployAndHandle(payload.repository.name, true, res)
     else
-        res.status(200).send(notMasterMessage)
+        res.status(403).send()
 
 )
 
