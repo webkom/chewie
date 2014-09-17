@@ -59,6 +59,7 @@ gulp.task('stylus', function () {
 });
 
 gulp.task('watch', function () {
+  gulp.watch(paths.stylus.src, ['stylus']);
   gulp.watch(paths.express.src, ['express']);
   gulp.watch(paths.client.src, ['client']);
 });

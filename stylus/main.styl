@@ -1,0 +1,71 @@
+@import 'nib'
+
+$red = #FC5B3F
+$green = #6FB07F
+$orange = #FCB03C
+
+body
+  font-family: 'Lato', sans-serif
+  font-weight: 200
+
+.container
+  width: 100%
+
+.navbar
+  background: transparent
+  border: none
+  min-height: 25px
+
+.header
+  text-align: center
+  font-size: 60px
+  padding-top: 50px
+  margin-bottom: 20px
+  border-bottom: 2px solid #e0e0e0
+
+.middle
+  margin: 0 auto
+  max-width: 1000px
+
+#output
+  height: 400px
+  margin: 0 auto
+
+.projects
+  text-align: left
+
+  h2
+    font-size 18px
+    margin-top: 0px
+    margin-bottom: 4px
+  .row
+    &:hover
+      cursor: pointer
+      background-color: darken(#f5f5f5, 10%)
+
+    width: 80%
+    margin: 0 auto
+    margin-bottom: 30px
+
+  .icon-container
+    text-align: right
+    height: 100px
+    .fa
+      margin-top: 15px
+
+.navbar-fixed-bottom
+  background: white
+
+.red
+  color: $red
+.orange
+  color: $orange
+.green
+  color: $green
+
+.thin
+  font-weight: 100
+
+@media screen and (min-width: 768px)
+  .projects
+    column-count(3)
