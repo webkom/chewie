@@ -3,6 +3,8 @@
 $red = #FC5B3F
 $green = #6FB07F
 $orange = #FCB03C
+$dark_blue = #002B36
+$success = rgba(41, 108, 28, 0.5)
 
 body
   font-family: 'Lato', sans-serif
@@ -22,30 +24,51 @@ body
   padding-top: 50px
   margin-bottom: 20px
   border-bottom: 2px solid #e0e0e0
+  color: $dark_blue
 
 .middle
   margin: 0 auto
   max-width: 1000px
 
 #output
-  height: 400px
   margin: 0 auto
+  padding-top: 5px
+
+  h3
+    text-align: center
+
+  pre
+    max-height: 600px
 
 .projects
   text-align: left
 
-  h2
-    font-size 18px
-    margin-top: 0px
-    margin-bottom: 4px
-  .row
-    &:hover
-      cursor: pointer
-      background-color: darken(#f5f5f5, 10%)
 
+  h2
+    color: $dark_blue
+    font-size 18px
+
+  .row
     width: 80%
     margin: 0 auto
     margin-bottom: 30px
+
+    &:hover
+      transition: all 0.5s
+      background-color: #d8d8d8
+      cursor: pointer
+
+    a
+      &:hover
+        text-decoration: none
+
+    p
+      margin: 0 0 5px 0
+
+    span
+      margin-top: 40px
+      color: #859900
+
 
   .icon-container
     text-align: right
