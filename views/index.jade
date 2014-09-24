@@ -8,184 +8,190 @@ block content
                     span.mega-octicon.octicon-repo
                 .col-xs-8
                     h2 #{name}
-                    a(href="#") #43dfas4
+                    p Last deployment: 18.06.2013
 
-    pre#output.row
-        code.
-            [luke.abakus.no] run: git fetch && git reset --hard origin/master
-            [luke.abakus.no] out: HEAD is now at 65a7a56 show more button bugfix
-            [luke.abakus.no] out:
+    #output
+        h3
+            | Current version:   
+            a(href='#')
+                span.octicon.octicon-mark-github
+                    |     #4390FSA
+        pre.row
+            code.
+                [luke.abakus.no] run: git fetch && git reset --hard origin/master
+                [luke.abakus.no] out: HEAD is now at 65a7a56 show more button bugfix
+                [luke.abakus.no] out:
 
-            [luke.abakus.no] run: make update
-            [luke.abakus.no] out: git fetch && git reset --hard origin/master
-            [luke.abakus.no] out: HEAD is now at 65a7a56 show more button bugfix
-            [luke.abakus.no] out: venv/bin/pip install -r requirements.txt
-            [luke.abakus.no] out: Requirement already satisfied (use --upgrade to upgrade): django==1.5.4 in ./venv/lib/python2.7/site-packages (from -r requirements.txt (line 1))
-            [luke.abakus.no] out: Requirement already satisfied (use --upgrade to upgrade): south==0.8.2 in ./venv/lib/python2.7/site-packages (from -r requirements.txt (line 2))
-            [luke.abakus.no] out: Requirement already satisfied (use --upgrade to upgrade): pillow in ./venv/lib/python2.7/site-packages (from -r requirements.txt (line 3))
-            [luke.abakus.no] out: Requirement already satisfied (use --upgrade to upgrade): flufl.bounce in ./venv/lib/python2.7/site-packages (from -r requirements.txt (line 4))
-            [luke.abakus.no] out: Requirement already satisfied (use --upgrade to upgrade): Markdown in ./venv/lib/python2.7/site-packages (from -r requirements.txt (line 5))
-            [luke.abakus.no] out: Requirement already satisfied (use --upgrade to upgrade): python-dateutil==1.5 in ./venv/lib/python2.7/site-packages (from -r requirements.txt (line 6))
-            [luke.abakus.no] out: Requirement already satisfied (use --upgrade to upgrade): vobject in ./venv/lib/python2.7/site-packages (from -r requirements.txt (line 7))
-            [luke.abakus.no] out: Requirement already satisfied (use --upgrade to upgrade): pytz in ./venv/lib/python2.7/site-packages (from -r requirements.txt (line 8))
-            [luke.abakus.no] out: Requirement already satisfied (use --upgrade to upgrade): django-compressor in ./venv/lib/python2.7/site-packages (from -r requirements.txt (line 9))
-            [luke.abakus.no] out: Requirement already satisfied (use --upgrade to upgrade): django-debug-toolbar in ./venv/lib/python2.7/site-packages (from -r requirements.txt (line 10))
-            [luke.abakus.no] out: Requirement already satisfied (use --upgrade to upgrade): django-extensions in ./venv/lib/python2.7/site-packages (from -r requirements.txt (line 11))
-            [luke.abakus.no] out: Requirement already satisfied (use --upgrade to upgrade): python-ldap==2.3.13 in ./venv/lib/python2.7/site-packages (from -r requirements.txt (line 12))
-            [luke.abakus.no] out: Requirement already satisfied (use --upgrade to upgrade): zc.lockfile in ./venv/lib/python2.7/site-packages (from -r requirements.txt (line 13))
-            [luke.abakus.no] out: Requirement already satisfied (use --upgrade to upgrade): beautifulsoup in ./venv/lib/python2.7/site-packages (from -r requirements.txt (line 14))
-            [luke.abakus.no] out: Requirement already satisfied (use --upgrade to upgrade): django-ckeditor in ./venv/lib/python2.7/site-packages (from -r requirements.txt (line 15))
-            [luke.abakus.no] out: Requirement already satisfied (use --upgrade to upgrade): raven in ./venv/lib/python2.7/site-packages (from -r requirements.txt (line 16))
-            [luke.abakus.no] out: Requirement already satisfied (use --upgrade to upgrade): tweetpony in ./venv/lib/python2.7/site-packages (from -r requirements.txt (line 17))
-            [luke.abakus.no] out: Requirement already satisfied (use --upgrade to upgrade): python-memcached in ./venv/lib/python2.7/site-packages (from -r requirements.txt (line 18))
-            [luke.abakus.no] out: Requirement already satisfied (use --upgrade to upgrade): django-fabric in ./venv/lib/python2.7/site-packages (from -r requirements.txt (line 19))
-            [luke.abakus.no] out: Requirement already satisfied (use --upgrade to upgrade): flufl.enum in ./venv/lib/python2.7/site-packages (from flufl.bounce->-r requirements.txt (line 4))
-            [luke.abakus.no] out: Requirement already satisfied (use --upgrade to upgrade): zope.interface in ./venv/lib/python2.7/site-packages (from flufl.bounce->-r requirements.txt (line 4))
-            [luke.abakus.no] out: Requirement already satisfied (use --upgrade to upgrade): django-appconf>=0.4 in ./venv/lib/python2.7/site-packages (from django-compressor->-r requirements.txt (line 9))
-            [luke.abakus.no] out: Requirement already satisfied (use --upgrade to upgrade): six in ./venv/lib/python2.7/site-packages (from django-extensions->-r requirements.txt (line 11))
-            [luke.abakus.no] out: Requirement already satisfied (use --upgrade to upgrade): setuptools in ./venv/lib/python2.7/site-packages/setuptools-0.6c11-py2.7.egg (from python-ldap==2.3.13->-r requirements.txt (line 12))
-            [luke.abakus.no] out: Requirement already satisfied (use --upgrade to upgrade): requests<=1.2.0 in ./venv/lib/python2.7/site-packages (from tweetpony->-r requirements.txt (line 17))
-            [luke.abakus.no] out: Requirement already satisfied (use --upgrade to upgrade): fabric in ./venv/lib/python2.7/site-packages (from django-fabric->-r requirements.txt (line 19))
-            [luke.abakus.no] out: Requirement already satisfied (use --upgrade to upgrade): paramiko>=1.10.0 in ./venv/lib/python2.7/site-packages (from fabric->django-fabric->-r requirements.txt (line 19))
-            [luke.abakus.no] out: Requirement already satisfied (use --upgrade to upgrade): pycrypto>=2.1,!=2.4 in ./venv/lib/python2.7/site-packages (from paramiko>=1.10.0->fabric->django-fabric->-r requirements.txt (line 19))
-            [luke.abakus.no] out: Requirement already satisfied (use --upgrade to upgrade): ecdsa in ./venv/lib/python2.7/site-packages (from paramiko>=1.10.0->fabric->django-fabric->-r requirements.txt (line 19))
-            [luke.abakus.no] out: Cleaning up...
-            [luke.abakus.no] out: venv/bin/python manage.py syncdb --migrate
-            [luke.abakus.no] out: Syncing...
-            [luke.abakus.no] out: Creating tables ...
-            [luke.abakus.no] out: Installing custom SQL ...
-            [luke.abakus.no] out: Installing indexes ...
-            [luke.abakus.no] out: Installed 0 object(s) from 0 fixture(s)
-            [luke.abakus.no] out: Migrating...
-            [luke.abakus.no] out: Running migrations for core:
-            [luke.abakus.no] out: - Nothing to migrate.
-            [luke.abakus.no] out:  - Loading initial data for core.
-            [luke.abakus.no] out: Installed 0 object(s) from 0 fixture(s)
-            [luke.abakus.no] out: Loading core initial data
-            [luke.abakus.no] out: Running migrations for user:
-            [luke.abakus.no] out: - Nothing to migrate.
-            [luke.abakus.no] out:  - Loading initial data for user.
-            [luke.abakus.no] out: Installed 0 object(s) from 0 fixture(s)
-            [luke.abakus.no] out: Loading user notification types
-            [luke.abakus.no] out: Running migrations for event:
-            [luke.abakus.no] out: - Nothing to migrate.
-            [luke.abakus.no] out:  - Loading initial data for event.
-            [luke.abakus.no] out: Installed 0 object(s) from 0 fixture(s)
-            [luke.abakus.no] out: Loading event initial data
-            [luke.abakus.no] out: Loading event notification types
-            [luke.abakus.no] out: Running migrations for mail:
-            [luke.abakus.no] out: - Nothing to migrate.
-            [luke.abakus.no] out:  - Loading initial data for mail.
-            [luke.abakus.no] out: Installed 0 object(s) from 0 fixture(s)
-            [luke.abakus.no] out: Running migrations for useradmin:
-            [luke.abakus.no] out: - Nothing to migrate.
-            [luke.abakus.no] out:  - Loading initial data for useradmin.
-            [luke.abakus.no] out: Installed 0 object(s) from 0 fixture(s)
-            [luke.abakus.no] out: Running migrations for quote:
-            [luke.abakus.no] out: - Nothing to migrate.
-            [luke.abakus.no] out:  - Loading initial data for quote.
-            [luke.abakus.no] out: Installed 0 object(s) from 0 fixture(s)
-            [luke.abakus.no] out: Loading quote notification types
-            [luke.abakus.no] out: Running migrations for announcement:
-            [luke.abakus.no] out: - Nothing to migrate.
-            [luke.abakus.no] out:  - Loading initial data for announcement.
-            [luke.abakus.no] out: Installed 0 object(s) from 0 fixture(s)
-            [luke.abakus.no] out: Loading announcement initial data
-            [luke.abakus.no] out: Running migrations for pages:
-            [luke.abakus.no] out: - Nothing to migrate.
-            [luke.abakus.no] out:  - Loading initial data for pages.
-            [luke.abakus.no] out: Installed 0 object(s) from 0 fixture(s)
-            [luke.abakus.no] out: Running migrations for admission:
-            [luke.abakus.no] out: - Nothing to migrate.
-            [luke.abakus.no] out:  - Loading initial data for admission.
-            [luke.abakus.no] out: Installed 0 object(s) from 0 fixture(s)
-            [luke.abakus.no] out: Running migrations for tv:
-            [luke.abakus.no] out: - Nothing to migrate.
-            [luke.abakus.no] out:  - Loading initial data for tv.
-            [luke.abakus.no] out: Installed 0 object(s) from 0 fixture(s)
-            [luke.abakus.no] out: Loading tv initial data
-            [luke.abakus.no] out: Running migrations for pr:
-            [luke.abakus.no] out: - Nothing to migrate.
-            [luke.abakus.no] out:  - Loading initial data for pr.
-            [luke.abakus.no] out: Installed 0 object(s) from 0 fixture(s)
-            [luke.abakus.no] out: Running migrations for exchange:
-            [luke.abakus.no] out: - Nothing to migrate.
-            [luke.abakus.no] out:  - Loading initial data for exchange.
-            [luke.abakus.no] out: Installed 0 object(s) from 0 fixture(s)
-            [luke.abakus.no] out: Loading exchange notification types
-            [luke.abakus.no] out: Running migrations for survey:
-            [luke.abakus.no] out: - Nothing to migrate.
-            [luke.abakus.no] out:  - Loading initial data for survey.
-            [luke.abakus.no] out: Installed 0 object(s) from 0 fixture(s)
-            [luke.abakus.no] out: Loading survey initial data
-            [luke.abakus.no] out: Loading survey notification types
-            [luke.abakus.no] out: Running migrations for company:
-            [luke.abakus.no] out: - Nothing to migrate.
-            [luke.abakus.no] out:  - Loading initial data for company.
-            [luke.abakus.no] out: Installed 0 object(s) from 0 fixture(s)
-            [luke.abakus.no] out: Loading company initial data
-            [luke.abakus.no] out: Running migrations for career:
-            [luke.abakus.no] out: - Nothing to migrate.
-            [luke.abakus.no] out:  - Loading initial data for career.
-            [luke.abakus.no] out: Installed 0 object(s) from 0 fixture(s)
-            [luke.abakus.no] out: Running migrations for alumni:
-            [luke.abakus.no] out: - Nothing to migrate.
-            [luke.abakus.no] out:  - Loading initial data for alumni.
-            [luke.abakus.no] out: Installed 0 object(s) from 0 fixture(s)
-            [luke.abakus.no] out: Running migrations for api:
-            [luke.abakus.no] out: - Nothing to migrate.
-            [luke.abakus.no] out:  - Loading initial data for api.
-            [luke.abakus.no] out: Installed 0 object(s) from 0 fixture(s)
-            [luke.abakus.no] out: Running migrations for frontpage:
-            [luke.abakus.no] out: - Nothing to migrate.
-            [luke.abakus.no] out:  - Loading initial data for frontpage.
-            [luke.abakus.no] out: Installed 0 object(s) from 0 fixture(s)
-            [luke.abakus.no] out: Running migrations for vote:
-            [luke.abakus.no] out: - Nothing to migrate.
-            [luke.abakus.no] out:  - Loading initial data for vote.
-            [luke.abakus.no] out: Installed 0 object(s) from 0 fixture(s)
-            [luke.abakus.no] out: Loading vote notification types
-            [luke.abakus.no] out: Running migrations for contact:
-            [luke.abakus.no] out: - Nothing to migrate.
-            [luke.abakus.no] out:  - Loading initial data for contact.
-            [luke.abakus.no] out: Installed 0 object(s) from 0 fixture(s)
-            [luke.abakus.no] out: Loading contact notification types
-            [luke.abakus.no] out: Running migrations for meeting:
-            [luke.abakus.no] out: - Nothing to migrate.
-            [luke.abakus.no] out:  - Loading initial data for meeting.
-            [luke.abakus.no] out: Installed 0 object(s) from 0 fixture(s)
-            [luke.abakus.no] out: Loading meeting notification types
-            [luke.abakus.no] out:
-            [luke.abakus.no] out: Synced:
-            [luke.abakus.no] out:  > django.contrib.contenttypes
-            [luke.abakus.no] out:  > django.contrib.sessions
-            [luke.abakus.no] out:  > django.contrib.markup
-            [luke.abakus.no] out:  > ckeditor
-            [luke.abakus.no] out:  > south
-            [luke.abakus.no] out:  > compressor
-            [luke.abakus.no] out:  > nerd.app.abacard
-            [luke.abakus.no] out:  > nerd.util.sortlist
-            [luke.abakus.no] out:
-            [luke.abakus.no] out: Migrated:
-            [luke.abakus.no] out:  - nerd.core
-            [luke.abakus.no] out:  - nerd.app.user
-            [luke.abakus.no] out:  - nerd.app.event
-            [luke.abakus.no] out:  - nerd.app.mail
-            [luke.abakus.no] out:  - nerd.app.useradmin
-            [luke.abakus.no] out:  - nerd.app.quote
-            [luke.abakus.no] out:  - nerd.app.announcement
-            [luke.abakus.no] out:  - nerd.app.pages
-            [luke.abakus.no] out:  - nerd.app.admission
-            [luke.abakus.no] out:  - nerd.app.tv
-            [luke.abakus.no] out:  - nerd.app.pr
-            [luke.abakus.no] out:  - nerd.app.exchange
-            [luke.abakus.no] out:  - nerd.app.survey
-            [luke.abakus.no] out:  - nerd.app.company
-            [luke.abakus.no] out:  - nerd.app.career
-            [luke.abakus.no] out:  - nerd.app.alumni
-            [luke.abakus.no] out:  - nerd.app.api
-            [luke.abakus.no] out:  - nerd.app.frontpage
-            [luke.abakus.no] out:  - nerd.app.vote
-            [luke.abakus.no] out:  - nerd.app.contact
-            [luke.abakus.no] out:  - nerd.app.meeting
-            [luke.abakus.no] out:
+                [luke.abakus.no] run: make update
+                [luke.abakus.no] out: git fetch && git reset --hard origin/master
+                [luke.abakus.no] out: HEAD is now at 65a7a56 show more button bugfix
+                [luke.abakus.no] out: venv/bin/pip install -r requirements.txt
+                [luke.abakus.no] out: Requirement already satisfied (use --upgrade to upgrade): django==1.5.4 in ./venv/lib/python2.7/site-packages (from -r requirements.txt (line 1))
+                [luke.abakus.no] out: Requirement already satisfied (use --upgrade to upgrade): south==0.8.2 in ./venv/lib/python2.7/site-packages (from -r requirements.txt (line 2))
+                [luke.abakus.no] out: Requirement already satisfied (use --upgrade to upgrade): pillow in ./venv/lib/python2.7/site-packages (from -r requirements.txt (line 3))
+                [luke.abakus.no] out: Requirement already satisfied (use --upgrade to upgrade): flufl.bounce in ./venv/lib/python2.7/site-packages (from -r requirements.txt (line 4))
+                [luke.abakus.no] out: Requirement already satisfied (use --upgrade to upgrade): Markdown in ./venv/lib/python2.7/site-packages (from -r requirements.txt (line 5))
+                [luke.abakus.no] out: Requirement already satisfied (use --upgrade to upgrade): python-dateutil==1.5 in ./venv/lib/python2.7/site-packages (from -r requirements.txt (line 6))
+                [luke.abakus.no] out: Requirement already satisfied (use --upgrade to upgrade): vobject in ./venv/lib/python2.7/site-packages (from -r requirements.txt (line 7))
+                [luke.abakus.no] out: Requirement already satisfied (use --upgrade to upgrade): pytz in ./venv/lib/python2.7/site-packages (from -r requirements.txt (line 8))
+                [luke.abakus.no] out: Requirement already satisfied (use --upgrade to upgrade): django-compressor in ./venv/lib/python2.7/site-packages (from -r requirements.txt (line 9))
+                [luke.abakus.no] out: Requirement already satisfied (use --upgrade to upgrade): django-debug-toolbar in ./venv/lib/python2.7/site-packages (from -r requirements.txt (line 10))
+                [luke.abakus.no] out: Requirement already satisfied (use --upgrade to upgrade): django-extensions in ./venv/lib/python2.7/site-packages (from -r requirements.txt (line 11))
+                [luke.abakus.no] out: Requirement already satisfied (use --upgrade to upgrade): python-ldap==2.3.13 in ./venv/lib/python2.7/site-packages (from -r requirements.txt (line 12))
+                [luke.abakus.no] out: Requirement already satisfied (use --upgrade to upgrade): zc.lockfile in ./venv/lib/python2.7/site-packages (from -r requirements.txt (line 13))
+                [luke.abakus.no] out: Requirement already satisfied (use --upgrade to upgrade): beautifulsoup in ./venv/lib/python2.7/site-packages (from -r requirements.txt (line 14))
+                [luke.abakus.no] out: Requirement already satisfied (use --upgrade to upgrade): django-ckeditor in ./venv/lib/python2.7/site-packages (from -r requirements.txt (line 15))
+                [luke.abakus.no] out: Requirement already satisfied (use --upgrade to upgrade): raven in ./venv/lib/python2.7/site-packages (from -r requirements.txt (line 16))
+                [luke.abakus.no] out: Requirement already satisfied (use --upgrade to upgrade): tweetpony in ./venv/lib/python2.7/site-packages (from -r requirements.txt (line 17))
+                [luke.abakus.no] out: Requirement already satisfied (use --upgrade to upgrade): python-memcached in ./venv/lib/python2.7/site-packages (from -r requirements.txt (line 18))
+                [luke.abakus.no] out: Requirement already satisfied (use --upgrade to upgrade): django-fabric in ./venv/lib/python2.7/site-packages (from -r requirements.txt (line 19))
+                [luke.abakus.no] out: Requirement already satisfied (use --upgrade to upgrade): flufl.enum in ./venv/lib/python2.7/site-packages (from flufl.bounce->-r requirements.txt (line 4))
+                [luke.abakus.no] out: Requirement already satisfied (use --upgrade to upgrade): zope.interface in ./venv/lib/python2.7/site-packages (from flufl.bounce->-r requirements.txt (line 4))
+                [luke.abakus.no] out: Requirement already satisfied (use --upgrade to upgrade): django-appconf>=0.4 in ./venv/lib/python2.7/site-packages (from django-compressor->-r requirements.txt (line 9))
+                [luke.abakus.no] out: Requirement already satisfied (use --upgrade to upgrade): six in ./venv/lib/python2.7/site-packages (from django-extensions->-r requirements.txt (line 11))
+                [luke.abakus.no] out: Requirement already satisfied (use --upgrade to upgrade): setuptools in ./venv/lib/python2.7/site-packages/setuptools-0.6c11-py2.7.egg (from python-ldap==2.3.13->-r requirements.txt (line 12))
+                [luke.abakus.no] out: Requirement already satisfied (use --upgrade to upgrade): requests<=1.2.0 in ./venv/lib/python2.7/site-packages (from tweetpony->-r requirements.txt (line 17))
+                [luke.abakus.no] out: Requirement already satisfied (use --upgrade to upgrade): fabric in ./venv/lib/python2.7/site-packages (from django-fabric->-r requirements.txt (line 19))
+                [luke.abakus.no] out: Requirement already satisfied (use --upgrade to upgrade): paramiko>=1.10.0 in ./venv/lib/python2.7/site-packages (from fabric->django-fabric->-r requirements.txt (line 19))
+                [luke.abakus.no] out: Requirement already satisfied (use --upgrade to upgrade): pycrypto>=2.1,!=2.4 in ./venv/lib/python2.7/site-packages (from paramiko>=1.10.0->fabric->django-fabric->-r requirements.txt (line 19))
+                [luke.abakus.no] out: Requirement already satisfied (use --upgrade to upgrade): ecdsa in ./venv/lib/python2.7/site-packages (from paramiko>=1.10.0->fabric->django-fabric->-r requirements.txt (line 19))
+                [luke.abakus.no] out: Cleaning up...
+                [luke.abakus.no] out: venv/bin/python manage.py syncdb --migrate
+                [luke.abakus.no] out: Syncing...
+                [luke.abakus.no] out: Creating tables ...
+                [luke.abakus.no] out: Installing custom SQL ...
+                [luke.abakus.no] out: Installing indexes ...
+                [luke.abakus.no] out: Installed 0 object(s) from 0 fixture(s)
+                [luke.abakus.no] out: Migrating...
+                [luke.abakus.no] out: Running migrations for core:
+                [luke.abakus.no] out: - Nothing to migrate.
+                [luke.abakus.no] out:  - Loading initial data for core.
+                [luke.abakus.no] out: Installed 0 object(s) from 0 fixture(s)
+                [luke.abakus.no] out: Loading core initial data
+                [luke.abakus.no] out: Running migrations for user:
+                [luke.abakus.no] out: - Nothing to migrate.
+                [luke.abakus.no] out:  - Loading initial data for user.
+                [luke.abakus.no] out: Installed 0 object(s) from 0 fixture(s)
+                [luke.abakus.no] out: Loading user notification types
+                [luke.abakus.no] out: Running migrations for event:
+                [luke.abakus.no] out: - Nothing to migrate.
+                [luke.abakus.no] out:  - Loading initial data for event.
+                [luke.abakus.no] out: Installed 0 object(s) from 0 fixture(s)
+                [luke.abakus.no] out: Loading event initial data
+                [luke.abakus.no] out: Loading event notification types
+                [luke.abakus.no] out: Running migrations for mail:
+                [luke.abakus.no] out: - Nothing to migrate.
+                [luke.abakus.no] out:  - Loading initial data for mail.
+                [luke.abakus.no] out: Installed 0 object(s) from 0 fixture(s)
+                [luke.abakus.no] out: Running migrations for useradmin:
+                [luke.abakus.no] out: - Nothing to migrate.
+                [luke.abakus.no] out:  - Loading initial data for useradmin.
+                [luke.abakus.no] out: Installed 0 object(s) from 0 fixture(s)
+                [luke.abakus.no] out: Running migrations for quote:
+                [luke.abakus.no] out: - Nothing to migrate.
+                [luke.abakus.no] out:  - Loading initial data for quote.
+                [luke.abakus.no] out: Installed 0 object(s) from 0 fixture(s)
+                [luke.abakus.no] out: Loading quote notification types
+                [luke.abakus.no] out: Running migrations for announcement:
+                [luke.abakus.no] out: - Nothing to migrate.
+                [luke.abakus.no] out:  - Loading initial data for announcement.
+                [luke.abakus.no] out: Installed 0 object(s) from 0 fixture(s)
+                [luke.abakus.no] out: Loading announcement initial data
+                [luke.abakus.no] out: Running migrations for pages:
+                [luke.abakus.no] out: - Nothing to migrate.
+                [luke.abakus.no] out:  - Loading initial data for pages.
+                [luke.abakus.no] out: Installed 0 object(s) from 0 fixture(s)
+                [luke.abakus.no] out: Running migrations for admission:
+                [luke.abakus.no] out: - Nothing to migrate.
+                [luke.abakus.no] out:  - Loading initial data for admission.
+                [luke.abakus.no] out: Installed 0 object(s) from 0 fixture(s)
+                [luke.abakus.no] out: Running migrations for tv:
+                [luke.abakus.no] out: - Nothing to migrate.
+                [luke.abakus.no] out:  - Loading initial data for tv.
+                [luke.abakus.no] out: Installed 0 object(s) from 0 fixture(s)
+                [luke.abakus.no] out: Loading tv initial data
+                [luke.abakus.no] out: Running migrations for pr:
+                [luke.abakus.no] out: - Nothing to migrate.
+                [luke.abakus.no] out:  - Loading initial data for pr.
+                [luke.abakus.no] out: Installed 0 object(s) from 0 fixture(s)
+                [luke.abakus.no] out: Running migrations for exchange:
+                [luke.abakus.no] out: - Nothing to migrate.
+                [luke.abakus.no] out:  - Loading initial data for exchange.
+                [luke.abakus.no] out: Installed 0 object(s) from 0 fixture(s)
+                [luke.abakus.no] out: Loading exchange notification types
+                [luke.abakus.no] out: Running migrations for survey:
+                [luke.abakus.no] out: - Nothing to migrate.
+                [luke.abakus.no] out:  - Loading initial data for survey.
+                [luke.abakus.no] out: Installed 0 object(s) from 0 fixture(s)
+                [luke.abakus.no] out: Loading survey initial data
+                [luke.abakus.no] out: Loading survey notification types
+                [luke.abakus.no] out: Running migrations for company:
+                [luke.abakus.no] out: - Nothing to migrate.
+                [luke.abakus.no] out:  - Loading initial data for company.
+                [luke.abakus.no] out: Installed 0 object(s) from 0 fixture(s)
+                [luke.abakus.no] out: Loading company initial data
+                [luke.abakus.no] out: Running migrations for career:
+                [luke.abakus.no] out: - Nothing to migrate.
+                [luke.abakus.no] out:  - Loading initial data for career.
+                [luke.abakus.no] out: Installed 0 object(s) from 0 fixture(s)
+                [luke.abakus.no] out: Running migrations for alumni:
+                [luke.abakus.no] out: - Nothing to migrate.
+                [luke.abakus.no] out:  - Loading initial data for alumni.
+                [luke.abakus.no] out: Installed 0 object(s) from 0 fixture(s)
+                [luke.abakus.no] out: Running migrations for api:
+                [luke.abakus.no] out: - Nothing to migrate.
+                [luke.abakus.no] out:  - Loading initial data for api.
+                [luke.abakus.no] out: Installed 0 object(s) from 0 fixture(s)
+                [luke.abakus.no] out: Running migrations for frontpage:
+                [luke.abakus.no] out: - Nothing to migrate.
+                [luke.abakus.no] out:  - Loading initial data for frontpage.
+                [luke.abakus.no] out: Installed 0 object(s) from 0 fixture(s)
+                [luke.abakus.no] out: Running migrations for vote:
+                [luke.abakus.no] out: - Nothing to migrate.
+                [luke.abakus.no] out:  - Loading initial data for vote.
+                [luke.abakus.no] out: Installed 0 object(s) from 0 fixture(s)
+                [luke.abakus.no] out: Loading vote notification types
+                [luke.abakus.no] out: Running migrations for contact:
+                [luke.abakus.no] out: - Nothing to migrate.
+                [luke.abakus.no] out:  - Loading initial data for contact.
+                [luke.abakus.no] out: Installed 0 object(s) from 0 fixture(s)
+                [luke.abakus.no] out: Loading contact notification types
+                [luke.abakus.no] out: Running migrations for meeting:
+                [luke.abakus.no] out: - Nothing to migrate.
+                [luke.abakus.no] out:  - Loading initial data for meeting.
+                [luke.abakus.no] out: Installed 0 object(s) from 0 fixture(s)
+                [luke.abakus.no] out: Loading meeting notification types
+                [luke.abakus.no] out:
+                [luke.abakus.no] out: Synced:
+                [luke.abakus.no] out:  > django.contrib.contenttypes
+                [luke.abakus.no] out:  > django.contrib.sessions
+                [luke.abakus.no] out:  > django.contrib.markup
+                [luke.abakus.no] out:  > ckeditor
+                [luke.abakus.no] out:  > south
+                [luke.abakus.no] out:  > compressor
+                [luke.abakus.no] out:  > nerd.app.abacard
+                [luke.abakus.no] out:  > nerd.util.sortlist
+                [luke.abakus.no] out:
+                [luke.abakus.no] out: Migrated:
+                [luke.abakus.no] out:  - nerd.core
+                [luke.abakus.no] out:  - nerd.app.user
+                [luke.abakus.no] out:  - nerd.app.event
+                [luke.abakus.no] out:  - nerd.app.mail
+                [luke.abakus.no] out:  - nerd.app.useradmin
+                [luke.abakus.no] out:  - nerd.app.quote
+                [luke.abakus.no] out:  - nerd.app.announcement
+                [luke.abakus.no] out:  - nerd.app.pages
+                [luke.abakus.no] out:  - nerd.app.admission
+                [luke.abakus.no] out:  - nerd.app.tv
+                [luke.abakus.no] out:  - nerd.app.pr
+                [luke.abakus.no] out:  - nerd.app.exchange
+                [luke.abakus.no] out:  - nerd.app.survey
+                [luke.abakus.no] out:  - nerd.app.company
+                [luke.abakus.no] out:  - nerd.app.career
+                [luke.abakus.no] out:  - nerd.app.alumni
+                [luke.abakus.no] out:  - nerd.app.api
+                [luke.abakus.no] out:  - nerd.app.frontpage
+                [luke.abakus.no] out:  - nerd.app.vote
+                [luke.abakus.no] out:  - nerd.app.contact
+                [luke.abakus.no] out:  - nerd.app.meeting
+                [luke.abakus.no] out:
