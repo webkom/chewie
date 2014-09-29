@@ -15,7 +15,7 @@ paths = {
   supervisor: {
     // gulp-supervisor doesn't seem to work with globs.
     ignore: ['public'],
-    watch: ['routes', '.']
+    watch: ['websockets', 'routes', '.']
   },
   client: {
     src: './public/bs/**/*.bs',
@@ -40,7 +40,7 @@ gulp.task('express', function () {
 
 gulp.task('client', function () {
   gulp.src(paths.client.src)
-    .pipe(bailey({}).on('error', gutil.log))
+    .pipe(bailey({bare: true}).on('error', gutil.log))
     .pipe(gulp.dest(paths.client.dest));
 });
 

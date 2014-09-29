@@ -31,14 +31,33 @@ body
   max-width: 1000px
 
 #output
+  display: none
   margin: 0 auto
   padding-top: 5px
 
   h3
     text-align: center
 
+    a
+      margin-left: 15px
+
+      span
+        font-size: 24px
+
+  button
+    width: 400px
+    text-align: center
+
+    i
+      display: none
+      margin-right: 5px
+      
+  #github-version
+    margin-left: 5px
+
   pre
-    max-height: 600px
+    display: none
+    max-height: 400px
 
 .projects
   text-align: left
@@ -48,15 +67,20 @@ body
     color: $dark_blue
     font-size 18px
 
-  .row
+  .project
     width: 80%
     margin: 0 auto
     margin-bottom: 30px
+
 
     &:hover
       transition: all 0.5s
       background-color: #d8d8d8
       cursor: pointer
+
+    &.disabled
+      background-color: #d8d8d8
+      cursor: not-allowed
 
     a
       &:hover
@@ -88,6 +112,7 @@ body
 
 .thin
   font-weight: 100
+
 
 @media screen and (min-width: 768px)
   .projects
