@@ -8,7 +8,7 @@ export router
 router = express.Router()
 
 deployAndHandle = (projectName, debug, res) ->
-    deploy(projectName, debug)
+    deploy.deployRegular(projectName, debug)
     .then((output) ->
         res.send(output)
     )
@@ -37,7 +37,7 @@ router.post('/github', (req, res) ->
     correct = 'sha1=' + hmac.read()
 
     console.log(signature, correct)
-    
+
     if signature == correct
         if payload.ref != 'refs/heads/master'
             res.status(200).send(messages.notMaster)

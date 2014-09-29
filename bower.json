@@ -16,7 +16,6 @@
     "tests"
   ],
   "dependencies": {
-    "rivets": "~0.6.10",
     "octicons": "~2.1.2",
     "highlightjs": "~8.0.0"
   }
