@@ -1,0 +1,7 @@
+tasks:
+  - npm test
+
+webhooks:
+  - https://chewie.abakus.no/api/frigg
+
+comment: false
