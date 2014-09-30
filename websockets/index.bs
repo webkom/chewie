@@ -7,13 +7,11 @@ handleDeploy = (client, projectName) ->
 
     stream.stdout.setEncoding('utf8')
     stream.stdout.on('data', (data) ->
-        console.log('her', data)
         client.emit('deploy_data', data)
     )
 
     stream.stderr.setEncoding('utf8')
     stream.stderr.on('data', (data) ->
-        console.log('her', data)
         client.emit('deploy_data', data)
     )
 
