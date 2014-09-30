@@ -36,8 +36,6 @@ router.post('/github', (req, res) ->
 
     correct = 'sha1=' + hmac.read()
 
-    console.log(signature, correct)
-
     if signature == correct
         if payload.ref != 'refs/heads/master'
             res.status(200).send(messages.notMaster)
