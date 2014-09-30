@@ -16,7 +16,6 @@ class DeployError extends Error
 
 
 deployStream = (projectName) ->
-  console.log('starting stream')
   return child_process.spawn(python, [deployScript, projectName])
 
 deployRegular = (projectName, debug) ->

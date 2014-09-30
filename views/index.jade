@@ -3,12 +3,11 @@ extends layout
 block content
     .projects.row
         each project, name in projects
-            .row.well.project(data-name="#{name}", data-hash='#123456', data-hash-link='www.github.com')
+            .row.well.project(data-name="#{name}")
                 .col-xs-4
                     span.mega-octicon.octicon-repo
                 .col-xs-8
                     h2 #{name}
-                    p Last deployment: 18.06.2013
 
     #output
         h3
