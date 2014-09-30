@@ -8,7 +8,7 @@ export router
 router = express.Router()
 
 deployAndHandle = (projectName, debug, res) ->
-    deploy(projectName, debug)
+    deploy.deployRegular(projectName, debug)
     .then((output) ->
         res.send(output)
     )

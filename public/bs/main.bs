@@ -1,0 +1,58 @@
+socket = io()
+
+projectButtons = $('.project')
+
+output = $('#output')
+outputField = output.find('pre')
+codeField = outputField.find('code')
+
+deployButton = output.find('#deploy-button')
+deployButtonText = deployButton.find('span')
+
+githubVersion = output.find('#github-version')
+githubVersionLink = output.find('#github-version-link')
+
+deploySpinner = deployButton.find('i')
+
+deploy = (projectName) ->
+    projectButtons.addClass('disabled')
+
+    deploySpinner.show()
+    outputField.show()
+
+    deployButtonText.html('Deploying #{projectName}')
+
+    socket.emit('deploy', projectName)
+
+    socket.on('deploy_data', (data) ->
+        codeField.append(data)
+        outputField.scrollTop(outputField[0].scrollHeight)
+    )
+
+    socket.on('deploy_done', () ->
+        projectButtons.removeClass('disabled')
+        deploySpinner.hide()
+        deployButtonText.html('Done!')
+    )
+
+projectButtons.click((e) ->
+    if $(@).hasClass('disabled')
+        e.stopPropagation()
+        return
+
+    projectName = $(@).data('name')
+    githubHash = $(@).data('hash')
+    githubHashLink = $(@).data('hash-link')
+    outputField.hide()
+    codeField.html('')
+    output.show()
+
+    githubVersion.html(githubHash)
+    githubVersionLink.attr('href', githubHashLink)
+
+    deployButtonText.html('Deploy #{projectName}?')
+
+    deployButton.click((e) ->
+        deploy(projectName)
+    )
+)

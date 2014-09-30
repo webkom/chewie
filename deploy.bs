@@ -1,11 +1,11 @@
 import child_process as child
 import bluebird as Promise
 
-export deploy
-
 child_process = Promise.promisifyAll(child)
 
-deployScript = '#{__dirname}/venv/bin/python #{__dirname}/deploy.py'
+python = '#{__dirname}/venv/bin/python'
+deployScript = '#{__dirname}/deploy.py'
+
 shortOutput = 'Done!'
 
 class DeployError extends Error
@@ -15,7 +15,10 @@ class DeployError extends Error
     @message = message
 
 
-deploy = (projectName, debug) ->
+deployStream = (projectName) ->
+  return child_process.spawn(python, [deployScript, projectName])
+
+deployRegular = (projectName, debug) ->
   return child_process.execAsync('#{deployScript} #{projectName}')
   .spread((stdout, stderr) ->
     if stderr
@@ -24,3 +27,8 @@ deploy = (projectName, debug) ->
   , (err) ->
     throw new DeployError(err.message)
   )
+
+export {
+  deployRegular: deployRegular,
+  deployStream: deployStream
+}

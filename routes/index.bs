@@ -4,7 +4,7 @@ import request
 router = express.Router()
 
 router.get('/', (req, res) ->
-  res.send('Hi')
+    res.render('index', { projects: require('../#{process.env.SERVER_CONFIG_FILE}')})
 )
 
 export router
