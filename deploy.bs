@@ -19,7 +19,7 @@ deployStream = (projectName) ->
   return child_process.spawn(python, [deployScript, projectName])
 
 deployRegular = (projectName, debug) ->
-  return child_process.execAsync('#{deployScript} #{projectName}')
+  return child_process.execAsync('#{python} #{deployScript} #{projectName}')
   .spread((stdout, stderr) ->
     if stderr
       throw new DeployError(stderr)
