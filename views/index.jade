@@ -1,24 +1,25 @@
 extends layout
 
 block content
+  #front
     .projects.row
-        each project, name in projects
-            .row.well.project(data-name="#{name}")
-                .col-xs-4
-                    span.mega-octicon.octicon-repo
-                .col-xs-8
-                    h2 #{name}
+      each project, name in projects
+        .row.well.project(data-name="#{name}")
+          .col-xs-4
+            span.mega-octicon.octicon-repo
+          .col-xs-8
+            h2 #{name}
 
     #output
-        h3
-            | Current version:
-            a#github-version-link(href='#')
-                span.octicon.octicon-mark-github
-                    span#github-version
-        h3
-            button.btn.btn-lg.btn-success#deploy-button
-                i.fa.fa-spinner.fa-spin
-                span
+      h3
+        | Current version:
+        a#github-version-link(href='#')
+          span.octicon.octicon-mark-github
+            span#github-version
+      h3
+        button.btn.btn-lg.btn-success#deploy-button
+          i.fa.fa-spinner.fa-spin
+          span
 
-        pre.row
-            code
+      pre.row
+        code

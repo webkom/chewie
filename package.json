@@ -31,7 +31,8 @@
     "morgan": "^1.2.3",
     "nib": "^1.0.3",
     "passport": "^0.2.0",
-    "passport-abakus": "0.0.3",
+    "passport-abakus": "^0.2.0",
+    "passport-memcached": "^0.2.0",
     "request": "^2.40.0",
     "socket.io": "^1.1.0"
   },
