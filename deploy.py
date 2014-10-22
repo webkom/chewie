@@ -1,6 +1,8 @@
 """
-Takes a project name as the first argument and a git-branch as the second (optional).
-Finds the hostname from a config file, then uses ssh to deploy the project.
+Takes a project name as the first argument
+and a git-branch as the second (optional).
+Finds the hostname from a config file, then
+uses ssh to deploy the project.
 """
 
 import os
@@ -13,9 +15,11 @@ class MissingProjectNameError(Exception):
     def __init__(self):
         Exception.__init__(self, 'Missing project name argument.')
 
+
 class MissingProjectError(Exception):
     def __init__(self, project_name):
         Exception.__init__(self, 'Cant\'t find a project with the project name %s' % project_name)
+
 
 class MissingConfigFileVariableError(Exception):
     def __init__(self, project_name):
@@ -25,6 +29,7 @@ try:
     conf_file = os.path.dirname(os.path.realpath(__file__)) + '/' + os.environ['SERVER_CONFIG_FILE']
 except KeyError as e:
     raise MissingConfigFileVariableError()
+
 
 def get_project(project_name):
     with open(conf_file) as f:
@@ -43,7 +48,7 @@ def deploy_project(project_name, branch='master'):
 
     with cd(project['path']):
         run('git fetch && git reset --hard origin/%s' % branch)
-        run('make update')
+        run('make production')
 
 
 if __name__ == '__main__':
