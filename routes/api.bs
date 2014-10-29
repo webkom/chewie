@@ -23,7 +23,6 @@ router.post('/deploy/:projectName', (req, res, next) ->
 
 messages = {
     notMaster: 'Received hook from a different branch than master, nothing will be done.'
-    handledByTravis: 'Received hook from a public project, which is handled by Travis. Nothing will be done.'
 }
 
 router.post('/github', (req, res) ->
@@ -39,30 +38,8 @@ router.post('/github', (req, res) ->
     if signature == correct
         if payload.ref != 'refs/heads/master'
             res.status(200).send(messages.notMaster)
-        elif payload.repository and not payload.repository.private
-            res.status(200).send(messages.handledByTravis)
         else
             deployAndHandle(payload.repository.name, true, res)
     else
         res.status(403).send()
-
-)
-
-router.post('/travis', (req, res) ->
-    payload = JSON.parse(req.body.payload)
-    repoSlug = req.headers['travis-repo-slug']
-
-    hash = crypto.createHash('sha256')
-    hash.setEncoding('hex')
-    hash.write(repoSlug + process.env.HOOK_TOKEN)
-    hash.end()
-    correctHash = hash.read()
-
-    if payload.branch == 'master'
-        if req.headers['authorization'] == correctHash
-            deployAndHandle(payload.repository.name, true, res)
-        else
-            res.status(403).send()
-    else
-        res.status(200).send(notMasterMessage)
 )

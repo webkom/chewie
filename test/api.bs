@@ -20,7 +20,6 @@ describe('API', () ->
         beforeEach(() ->
             deploySpy = chai.spy(deploy)
         )
-          
 
         it('should return 403 when auth fails', (done) ->
             request(app)
@@ -33,20 +32,6 @@ describe('API', () ->
                 .post('/api/github')
                 .set('x-hub-signature', HASH)
                 .expect(200, done)
-        )
-
-        it('should not deploy if project is public', (done) ->
-            request(app)
-                .post('/api/github')
-                .set('x-hub-signature', HASH_WITH_PAYLOAD)
-                .send(ghPushFixture)
-                .expect(200)
-                .end((err, res) ->
-                    expect(err).to.be.null
-                    expect(res.text).to.equal('Received hook from a public project, which is handled by Travis. Nothing will be done.')
-                    expect(deploySpy).not.to.have.been.called
-                    done()
-                )
         )
     )
 )
