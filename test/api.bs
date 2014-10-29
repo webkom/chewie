@@ -8,6 +8,7 @@ import ../app
 import ../routes/api: messages
 import ../deploy
 import ./fixtures/github-push as ghPushFixture
+import ./fixtures/github-status-failure as ghStatusFailureFixture
 
 expect = chai.expect
 chai.use(spies)
@@ -16,11 +17,11 @@ describe('API', () ->
     describe('/github', () ->
         HASH = 'sha1=7876c938d38e99b954b3d839c7bafb343d29e776'
         HASH_WITH_PAYLOAD = 'sha1=afc5f9b9343a32bdb7c3c5357a9b5aeebe69ebd8'
+        HASH_WITH_STATUS_PAYLOAD = 'sha1=99eb999cad90ad98c78b1affb516b5018954eaa7'
         deploySpy = undefined
         beforeEach(() ->
             deploySpy = chai.spy(deploy)
         )
-          
 
         it('should return 403 when auth fails', (done) ->
             request(app)
@@ -35,15 +36,31 @@ describe('API', () ->
                 .expect(200, done)
         )
 
-        it('should not deploy if project is public', (done) ->
+        it('should not deploy status is failure', (done) ->
+            request(app)
+                .post('/api/github')
+                .set('x-hub-signature', HASH_WITH_STATUS_PAYLOAD)
+                .set('x-github-event', 'status')
+                .send(ghStatusFailureFixture)
+                .expect(200)
+                .end((err, res) ->
+                    expect(err).to.be.null
+                    expect(res.text).to.equal('State is not success, nothing will be done.')
+                    expect(deploySpy).not.to.have.been.called
+                    done()
+                )
+        )
+
+        it('should not deploy if event is not status', (done) ->
             request(app)
                 .post('/api/github')
                 .set('x-hub-signature', HASH_WITH_PAYLOAD)
+                .set('x-github-event', 'push')
                 .send(ghPushFixture)
                 .expect(200)
                 .end((err, res) ->
                     expect(err).to.be.null
-                    expect(res.text).to.equal('Received hook from a public project, which is handled by Travis. Nothing will be done.')
+                    expect(res.text).to.equal('Not a status event, nothing will be done.')
                     expect(deploySpy).not.to.have.been.called
                     done()
                 )
