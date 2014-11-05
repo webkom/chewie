@@ -28,6 +28,11 @@
     "hostname": "padme.abakus.no",
     "user": "prr",
     "path": "/home/prr/prr"
+  },
+  "ossus": {
+    "hostname": "hansolo.abakus.no",
+    "user": "ossus",
+    "path": "/home/ossus/ossus"
   }
 
 }
