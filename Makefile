@@ -20,7 +20,7 @@ ifeq ($(findstring $(CORRECT),$(HOSTNAME)),$(CORRECT))
 	git fetch && git reset --hard origin/master
 	npm install
 	$(GULP)
-	forever restart index.js
+	forever restart $(PWD)/index.js
 else
 	@echo "Not in a production environment!"
 endif
