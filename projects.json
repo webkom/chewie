@@ -1,4 +1,9 @@
 {
+  "chewie": {
+    "hostname": "luke.abakus.no",
+    "user": "chewie",
+    "path": "/home/chewie/chewie"
+  },
   "nerd": {
     "hostname": "luke.abakus.no",
     "user": "webkom",
