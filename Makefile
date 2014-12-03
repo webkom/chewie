@@ -25,4 +25,4 @@ else
 	@echo "Not in a production environment!"
 endif
 
-.PHONY: test parse
+.PHONY: test node_modules parse
