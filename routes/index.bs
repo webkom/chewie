@@ -5,7 +5,7 @@ import ./auth-helpers as authHelpers: isAuthenticated
 router = express.Router()
 
 router.get('/', authHelpers.isAuthenticated, (req, res) ->
-    res.render('index', { projects: require('../#{process.env.SERVER_CONFIG_FILE}')})
+    res.render('index', { projects: require(process.env.SERVER_CONFIG_FILE) })
 )
 
 export router

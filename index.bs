@@ -1,9 +1,15 @@
 import debug
 import http
+import path
 
 import ./websockets as handleMessages
-
 import ./app
+import ./env-check as envCheck
+
+envCheck(['SERVER_CONFIG_FILE'])
+confPath = process.env.SERVER_CONFIG_FILE
+if path.resolve(confPath) != path.normalize(confPath)
+  throw new Error('SERVER_CONFIG_FILE must be an absolute path.')
 
 server = http.Server(app)
 io = require('socket.io')(server)
