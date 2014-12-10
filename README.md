@@ -1,12 +1,10 @@
 # chewie [![Build status](https://ci.frigg.io/badges/webkom/chewie/)](https://ci.frigg.io/webkom/chewie/last/)
-Server deploy tool. Will consist of an API and a frontend.
-
-![Ship it!](http://1.bp.blogspot.com/_v0neUj-VDa4/TFBEbqFQcII/AAAAAAAAFBU/E8kPNmF1h1E/s640/squirrelbacca-thumb.jpg)
+Server deploy tool, supports deployments from a web interface and through GitHub webhooks.
 
 ### Usage
-There is currently to ways to make chewie deploy a project. By status event hook
-from Github, from which a success status on master will make it deploy the master
-branch, and by clickong on a button on the the front page. 
+There are currently two ways to make chewie deploy a project. By a status event hook
+from GitHub, from which a success status on master will make it deploy the master
+branch, and by using the web frontend.
 
 ## Setup
 ```bash
@@ -15,9 +13,9 @@ cd chewie
 npm install
 gulp
 ```
-There has to be a projects json file with descriptions of the projects you have.
+There has to be a JSON-file with descriptions of the projects you want to deploy.
 *chewie* will look for it on the location specified by the environment variable:
-`SERVER_CONFIG_FILE`. The file should be on the format below:
+`SERVER_CONFIG_FILE`. The file should use the following format:
 ```json
 {
   "<repo-name-from-github>": {
@@ -30,6 +28,7 @@ There has to be a projects json file with descriptions of the projects you have.
   }
 }
 ```
+
 #### Prepare the projects
 All projects must have a `production` target in make. *chewie* will run 
 `make production` in the given path on the given server. Thus, the target
@@ -39,7 +38,7 @@ must contain all tasks to successfully deploy the project. Except
 
 ## Tests
 ```bash
-mocha
+make test
 ```
 
 --------
