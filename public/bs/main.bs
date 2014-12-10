@@ -52,6 +52,7 @@ projectButtons.click((e) ->
 
     deployButtonText.html('Deploy #{projectName}?')
 
+    deployButton.off('click')
     deployButton.click((e) ->
         deploy(projectName)
     )

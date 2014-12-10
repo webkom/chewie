@@ -26,7 +26,7 @@ class MissingConfigFileVariableError(Exception):
         Exception.__init__(self, 'Can\'t find the environment variable SERVER_CONFIG_FILE.')
 
 try:
-    conf_file = os.path.dirname(os.path.realpath(__file__)) + '/' + os.environ['SERVER_CONFIG_FILE']
+    conf_file = os.environ['SERVER_CONFIG_FILE']
 except KeyError as e:
     raise MissingConfigFileVariableError()
 

@@ -5,7 +5,6 @@ export router
 router = express.Router()
 
 router.route('/login').get((req, res) ->
-    console.log("heI")
     res.render('login')
 ).post(
     passport.authenticate('local', { successRedirect: '/',
