@@ -10,7 +10,10 @@ router = express.Router()
 deployAndHandle = (projectName, debug, res) ->
     deploy.deployRegular(projectName, debug)
     .then((output) ->
-        res.send(output)
+        res.json({
+            status: 200,
+            output: output
+        })
     )
     .catch((err) ->
         handleError(err, res)
@@ -38,14 +41,24 @@ router.post('/github', (req, res) ->
     correct = 'sha1=' + hmac.read()
 
     if signature == correct
+        response = {
+            status: 200
+        }
+
         if req.headers['x-github-event'] != 'status'
-            res.send(messages.notStatusEvent)
+            response.error = messages.notStatusEvent
+            res.json(response)
         elif payload.state != 'success'
-            res.send(messages.notSuccess)
+            response.error = messages.notSuccess
+            res.json(response)
         elif payload.branches[0].name != 'master'
-            res.send(messages.notMaster)
+            response.error = messages.notMaster
+            res.json(response)
         else
             deployAndHandle(payload.repository.name, true, res)
     else
-        res.status(403).send()
+        res.status(403).json({
+            status: 403,
+            error: 'Invalid hook signature.'
+        })
 )
