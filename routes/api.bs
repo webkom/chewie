@@ -22,10 +22,6 @@ deployAndHandle = (projectName, debug, res) ->
     handleError(err, res)
   )
 
-router.post('/deploy/:projectName', authHelpers.isAuthenticated, (req, res, next) ->
-  deployAndHandle(req.params.projectName, req.query.debug, res)
-)
-
 messages = {
   notMaster: 'Received hook from a different branch than master, nothing will be done.'
   notStatusEvent: 'Not a status event, nothing will be done.'
