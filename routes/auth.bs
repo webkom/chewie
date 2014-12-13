@@ -7,8 +7,8 @@ router = express.Router()
 router.route('/login').get((req, res) ->
     res.render('login')
 ).post(
-    passport.authenticate('local', { successRedirect: '/',
-                                     failureRedirect: '/auth/login',
+    passport.authenticate('local', { successRedirect: '/'
+                                     failureRedirect: '/auth/login'
                                      failureFlash: true })
 )
 

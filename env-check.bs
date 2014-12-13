@@ -1,3 +1,5 @@
+export envCheck
+
 envCheck = (envVariables) ->
     missing = []
     for envVar in envVariables
@@ -9,5 +11,3 @@ envCheck = (envVariables) ->
             throw new Error('Missing environment variable #{missing[0]}')
         else
             throw new Error('Missing environment variables #{missing.join(", ")}')
-
-export envCheck

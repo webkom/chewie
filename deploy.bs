@@ -29,6 +29,6 @@ deployRegular = (projectName, debug) ->
   )
 
 export {
-  deployRegular: deployRegular,
+  deployRegular: deployRegular
   deployStream: deployStream
 }

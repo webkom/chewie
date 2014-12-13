@@ -9,61 +9,94 @@ import ../routes/api: messages
 import ../deploy
 import ./fixtures/github-push as ghPushFixture
 import ./fixtures/github-status-failure as ghStatusFailureFixture
+import ./fixtures/github-wrong-branch as ghWrongBranchFixture
 
 expect = chai.expect
 chai.use(spies)
 
 describe('API', () ->
-    describe('/github', () ->
-        HASH = 'sha1=7876c938d38e99b954b3d839c7bafb343d29e776'
-        HASH_WITH_PAYLOAD = 'sha1=afc5f9b9343a32bdb7c3c5357a9b5aeebe69ebd8'
-        HASH_WITH_STATUS_PAYLOAD = 'sha1=99eb999cad90ad98c78b1affb516b5018954eaa7'
-        deploySpy = undefined
-        beforeEach(() ->
-            deploySpy = chai.spy(deploy)
-        )
+  describe('/github', () ->
+    HASH_EMPTY_PAYLOAD = 'sha1=7876c938d38e99b954b3d839c7bafb343d29e776'
+    HASH_WITH_PAYLOAD = 'sha1=afc5f9b9343a32bdb7c3c5357a9b5aeebe69ebd8'
+    HASH_WITH_STATUS_PAYLOAD = 'sha1=99eb999cad90ad98c78b1affb516b5018954eaa7'
+    HASH_WITH_WRONG_BRANCH_PAYLOAD = 'sha1=a8a62aa8e11029cef4fe0473b7158458f6a84622'
 
-        it('should return 403 when auth fails', (done) ->
-            request(app)
-                .post('/api/github')
-                .expect(403, done)
-        )
+    deploySpy = undefined
+    beforeEach(() ->
+      deploySpy = chai.spy(deploy)
+    )
 
-        it('should return 200 when auth succeeds', (done) ->
-            request(app)
-                .post('/api/github')
-                .set('x-hub-signature', HASH)
-                .expect(200, done)
-        )
+    it('should return 200 when auth succeeds', (done) ->
+      request(app)
+        .post('/api/github')
+        .set('x-hub-signature', HASH_EMPTY_PAYLOAD)
+        .expect(200, done)
+    )
 
-        it('should not deploy status is failure', (done) ->
-            request(app)
-                .post('/api/github')
-                .set('x-hub-signature', HASH_WITH_STATUS_PAYLOAD)
-                .set('x-github-event', 'status')
-                .send(ghStatusFailureFixture)
-                .expect(200)
-                .end((err, res) ->
-                    expect(err).to.be.null
-                    expect(res.text).to.equal('State is not success, nothing will be done.')
-                    expect(deploySpy).not.to.have.been.called
-                    done()
-                )
-        )
-
-        it('should not deploy if event is not status', (done) ->
-            request(app)
-                .post('/api/github')
-                .set('x-hub-signature', HASH_WITH_PAYLOAD)
-                .set('x-github-event', 'push')
-                .send(ghPushFixture)
-                .expect(200)
-                .end((err, res) ->
-                    expect(err).to.be.null
-                    expect(res.text).to.equal('Not a status event, nothing will be done.')
-                    expect(deploySpy).not.to.have.been.called
-                    done()
-                )
+    it('should not deploy when given incorrect hash', (done) ->
+      request(app)
+        .post('/api/github')
+        .set('x-hub-signature', 'wrong')
+        .expect(403)
+        .expect('Content-Type', /json/)
+        .end((err, res) ->
+          expect(err).to.be.null
+          expect(res.body.status).to.equal(403)
+          expect(res.body.error).to.equal('Invalid hook signature.')
+          expect(deploySpy).not.to.have.been.called
+          done()
         )
     )
+
+    it('should not deploy if status is failure', (done) ->
+      request(app)
+        .post('/api/github')
+        .set('x-hub-signature', HASH_WITH_STATUS_PAYLOAD)
+        .set('x-github-event', 'status')
+        .send(ghStatusFailureFixture)
+        .expect(200)
+        .expect('Content-Type', /json/)
+        .end((err, res) ->
+          expect(err).to.be.null
+          expect(res.body.status).to.equal(200)
+          expect(res.body.error).to.equal('State is not success, nothing will be done.')
+          expect(deploySpy).not.to.have.been.called
+          done()
+        )
+    )
+
+    it('should not deploy if event is not status', (done) ->
+      request(app)
+        .post('/api/github')
+        .set('x-hub-signature', HASH_WITH_PAYLOAD)
+        .set('x-github-event', 'push')
+        .send(ghPushFixture)
+        .expect(200)
+        .expect('Content-Type', /json/)
+        .end((err, res) ->
+          expect(err).to.be.null
+          expect(res.body.status).to.equal(200)
+          expect(res.body.error).to.equal('Not a status event, nothing will be done.')
+          expect(deploySpy).not.to.have.been.called
+          done()
+        )
+    )
+
+    it('should not deploy if branch is not master', (done) ->
+      request(app)
+      .post('/api/github')
+      .set('x-hub-signature', HASH_WITH_WRONG_BRANCH_PAYLOAD)
+      .set('x-github-event', 'status')
+      .send(ghWrongBranchFixture)
+      .expect(200)
+      .expect('Content-Type', /json/)
+      .end((err, res) ->
+        expect(err).to.be.null
+        expect(res.body.status).to.equal(200)
+        expect(res.body.error).to.equal('Received hook from a different branch than master, nothing will be done.')
+        expect(deploySpy).not.to.have.been.called
+        done()
+        )
+      )
+  )
 )
