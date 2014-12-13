@@ -14,7 +14,7 @@ deployAndHandle = (projectName, debug, res) ->
     res
       .status(200)
       .json({
-        status: 200,
+        status: 200
         output: output
       })
   )
@@ -62,7 +62,7 @@ router.post('/github', (req, res) ->
     res
       .status(403)
       .json({
-        status: 403,
+        status: 403
         error: 'Invalid hook signature.'
       })
 )

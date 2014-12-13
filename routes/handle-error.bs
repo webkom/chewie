@@ -2,6 +2,6 @@ export handleError
 
 handleError = (err, res) ->
   res.status(500).json({
-    status: 500,
+    status: 500
     error: err
   })
