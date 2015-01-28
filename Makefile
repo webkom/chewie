@@ -10,8 +10,8 @@ STYL = $(shell find src/frontend/stylus -name "*.styl")
 BS = $(shell find src/frontend/stylus -name "*.styl")
 
 PARSE = $(BAILEY) src/server dist --node && \
-			  $(BAILEY) src/frontend public/js --bare && \
-				$(BAILEY)	test dist/test --node
+  	$(BAILEY) src/frontend public/js --bare && \
+	$(BAILEY)	test dist/test --node
 
 ifeq ($(findstring $(CORRECT_HOSTNAME),$(HOSTNAME)),$(CORRECT_HOSTNAME))
 	ENV = production
@@ -20,6 +20,7 @@ else
 	ENV = development
 	STYLUS = $(BIN)/stylus --sourcemap --include node_modules/nib/lib < $(STYL)
 endif
+all: parse public/stylesheets/main.css
 
 help:
 	@echo "Available commands:"
@@ -62,4 +63,4 @@ else
 	@echo "Not in a production environment!"
 endif
 
-.PHONY: test install parse clean production
+.PHONY: test install parse clean production all
