@@ -1,0 +1,27 @@
+import ../deploy
+
+export handleMessages
+
+handleDeploy = (client, projectName) ->
+  stream = deploy.deployStream(projectName)
+
+  stream.stdout.setEncoding('utf8')
+  stream.stdout.on('data', (data) ->
+    client.emit('deploy_data', data)
+  )
+
+  stream.stderr.setEncoding('utf8')
+  stream.stderr.on('data', (data) ->
+    client.emit('deploy_data', data)
+  )
+
+  stream.on('close', (code) ->
+    client.emit('deploy_done')
+  )
+
+handleMessages = (io) ->
+  io.on('connection', (client) ->
+    client.on('deploy', (projectName) ->
+      handleDeploy(@, projectName)
+    )
+  )
