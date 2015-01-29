@@ -36,6 +36,7 @@ parse: node_modules $(BS)
 	$(PARSE)
 
 public/stylesheets/main.css: node_modules $(STYL)
+	@mkdir -p public/stylesheets
 	$(STYLUS) > $@
 
 install: node_modules
