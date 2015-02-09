@@ -1,4 +1,4 @@
-# chewie [![Build status](https://ci.frigg.io/badges/webkom/chewie/)](https://ci.frigg.io/webkom/chewie/last/)
+# chewie [![Build status](https://ci.frigg.io/badges/webkom/chewie/)](https://ci.frigg.io/webkom/chewie/last/) [![Coverage status](https://ci.frigg.io/badges/coverage/webkom/chewie/)](https://ci.frigg.io/webkom/chewie/last/)
 Server deploy tool, supports deployments from a web interface and through GitHub webhooks.
 
 ### Usage

@@ -1,5 +1,8 @@
 tasks:
   - npm test
   - flake8
+  - node_modules/.bin/istanbul report cobertura
 
-comment: false
+coverage:
+  path: coverage/cobertura-coverage.xml
+  parser: cobertura
