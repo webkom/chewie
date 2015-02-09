@@ -3,8 +3,8 @@ import bluebird as Promise
 
 child_process = Promise.promisifyAll(child)
 
-python = '#{__dirname}/venv/bin/python'
-deployScript = '#{__dirname}/deploy.py'
+python = '#{process.cwd()}/venv/bin/python'
+deployScript = '#{process.cwd()}/deploy.py'
 
 shortOutput = 'Done!'
 
