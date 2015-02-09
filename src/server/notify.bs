@@ -4,15 +4,13 @@ notifySlack = (type, text, error) ->
   if process.env.SLACK_URL
     slackGateway = slackNotify(process.env.SLACK_URL)
 
-    console.log('sending with #{type}, #{text}, #{process.env.SLACK_CHANNEL}')
-
     options = {
       text: text,
       channel: process.env.SLACK_CHANNEL
     }
 
     if error
-      options['fields'] = {
+      options.fields = {
         'Error message': error
       }
 
