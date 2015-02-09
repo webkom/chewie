@@ -1,11 +1,16 @@
 import slack-notify as slackNotify
 
+export {
+  notifySuccess: notifySuccess,
+  notifyError: notifyError
+}
+
 notifySlack = (type, text, error) ->
   if process.env.SLACK_URL
     slackGateway = slackNotify(process.env.SLACK_URL)
 
     options = {
-      text: text,
+      text: text
       channel: process.env.SLACK_CHANNEL
     }
 
@@ -23,8 +28,3 @@ notifySuccess = (projectName, source) ->
 notifyError = (projectName, source, error) ->
   text = 'Failed deploying #{projectName} (source: #{source})'
   notifySlack('alert', text, error)
-
-export {
-  notifySuccess: notifySuccess,
-  notifyError: notifyError
-}

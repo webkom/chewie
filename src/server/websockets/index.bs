@@ -22,8 +22,6 @@ handleDeploy = (client, projectName) ->
   stream.on('close', (code) ->
     client.emit('deploy_done')
 
-    console.log('deploy done')
-
     if errors.length
       notifyError(projectName, 'frontend', errors)
     else

@@ -1,6 +1,11 @@
 import child_process as child
 import bluebird as Promise
 
+export {
+  deployRegular: deployRegular
+  deployStream: deployStream
+}
+
 child_process = Promise.promisifyAll(child)
 
 python = '#{process.cwd()}/venv/bin/python'
@@ -27,8 +32,3 @@ deployRegular = (projectName, debug) ->
   , (err) ->
     throw new DeployError(err.message)
   )
-
-export {
-  deployRegular: deployRegular
-  deployStream: deployStream
-}
