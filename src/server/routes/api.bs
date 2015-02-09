@@ -1,6 +1,7 @@
 import express
 import crypto
 import ../deploy
+import ../notify: notifySuccess, notifyError
 import ./handle-error as handleError
 import ./auth-helpers as authHelpers: isAuthenticated
 
@@ -17,8 +18,10 @@ deployAndHandle = (projectName, debug, res) ->
         status: 200
         output: output
       })
+    notifySuccess(projectName, 'webhook')
   )
   .catch((err) ->
+    notifyError(projectName, 'webhook', err)
     handleError(err, res)
   )
 

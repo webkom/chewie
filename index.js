@@ -8,5 +8,7 @@ try {
 } catch(e) {
   if (e.code == 'MODULE_NOT_FOUND') {
     console.log('You need to run make parse'.red);
+  } else {
+    throw e; 
   }
 }

@@ -1,9 +1,9 @@
+export {
+  isAuthenticated: isAuthenticated
+}
+
 isAuthenticated = (req, res, next) ->
   if req.isAuthenticated()
     next()
   else
     res.redirect('/auth/login')
-
-export {
-  isAuthenticated: isAuthenticated
-}

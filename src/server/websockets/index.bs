@@ -1,9 +1,12 @@
 import ../deploy
+import ../notify: notifySuccess, notifyError
 
 export handleMessages
 
 handleDeploy = (client, projectName) ->
   stream = deploy.deployStream(projectName)
+
+  errors = ''
 
   stream.stdout.setEncoding('utf8')
   stream.stdout.on('data', (data) ->
@@ -12,11 +15,17 @@ handleDeploy = (client, projectName) ->
 
   stream.stderr.setEncoding('utf8')
   stream.stderr.on('data', (data) ->
+    errors += data
     client.emit('deploy_data', data)
   )
 
   stream.on('close', (code) ->
     client.emit('deploy_done')
+
+    if errors.length
+      notifyError(projectName, 'frontend', errors)
+    else
+      notifySuccess(projectName, 'frontend')
   )
 
 handleMessages = (io) ->
