@@ -1,5 +1,7 @@
 import express
 import crypto
+
+import ../config
 import ../deploy
 import ../notify: notifySuccess, notifyError
 import ./handle-error as handleError
@@ -34,7 +36,7 @@ messages = {
 router.post('/github', (req, res) ->
   payload = req.body
   signature = req.headers['x-hub-signature']
-  hmac = crypto.createHmac('sha1', process.env.HOOK_TOKEN)
+  hmac = crypto.createHmac('sha1', config.HOOK_TOKEN)
   hmac.setEncoding('hex')
   hmac.write(JSON.stringify(payload))
   hmac.end()

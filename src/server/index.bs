@@ -1,20 +1,17 @@
 import debug
 import http
 import path
-import check-env as checkEnv
 
+import ./config
 import ./websockets as handleMessages
 import ./app
 
-checkEnv(['SERVER_CONFIG_FILE'])
-confPath = process.env.SERVER_CONFIG_FILE
-if path.resolve(confPath) != path.normalize(confPath)
-  throw new Error('SERVER_CONFIG_FILE must be an absolute path.')
-
 server = http.Server(app)
 io = require('socket.io')(server)
-
 debug = debug('chewie.abakus.no')
+
+if path.resolve(config.SERVER_CONFIG_FILE) != path.normalize(config.SERVER_CONFIG_FILE)
+  throw new Error('SERVER_CONFIG_FILE must be an absolute path.')
 
 app.set('port', process.env.PORT or 3000)
 
