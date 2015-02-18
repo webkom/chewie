@@ -1,0 +1,13 @@
+import check-env as checkEnv
+
+checkEnv(['SERVER_CONFIG_FILE', 'HOOK_TOKEN'])
+
+
+export {
+  HOOK_TOKEN: process.env.HOOK_TOKEN
+  SLACK_URL: process.env.SLACK_URL
+  SLACK_CHANNEL: process.env.SLACK_CHANNEL
+  PASSPORT_STRATEGY: process.env.PASSPORT_STRATEGY
+  PASSPORT_STRATEGY_OPTIONS: process.env.PASSPORT_STRATEGY_OPTIONS or {}
+  SERVER_CONFIG_FILE: process.env.SERVER_CONFIG_FILE
+}
