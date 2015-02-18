@@ -41,7 +41,7 @@ public/stylesheets/main.css: node_modules $(STYL)
 
 install: node_modules
 
-run: parse
+run: venv parse
 	ABAKUS_TOKEN=test HOOK_TOKEN=test SERVER_CONFIG_FILE=$(PWD)/example.json $(CHEWIE)
 
 test: parse
@@ -50,10 +50,14 @@ test: parse
 clean:
 	rm -rf dist public/js public/stylesheets
 
+venv:
+	virtualenv venv
+	venv/bin/pip install -r requirements.txt
+
 node_modules:
 	npm install
 
-production:
+production: venv
 ifeq ($(ENV), production)
 	git fetch && git reset --hard origin/master
 	npm install
