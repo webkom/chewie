@@ -1,128 +1,75 @@
 @import 'nib'
 
-$red = #FC5B3F
-$green = #6FB07F
-$orange = #FCB03C
-$dark_blue = #002B36
-$success = rgba(41, 108, 28, 0.5)
+$dark-gray = #222
+$gray = lighten($dark-gray, 30%)
+$light-gray = lighten($gray, 50%)
+$purple = #5B527F
+
+html
+  height 100%
+  padding 0
+  margin 0
 
 body
-  font-family: 'Lato', sans-serif
-  font-weight: 200
+  height 100%
+  padding 0
+  margin 0
+  font-family 'Lato', sans-serif
+  font-weight 100
+  background $dark-gray
+  color white
 
-.container
-  width: 100%
+h1, h2, h3, h4
+  font-weight 100
 
 .navbar
-  background: transparent
-  border: none
-  min-height: 25px
+  background transparent
+  border none
+  min-height 25px
 
-.header
-  text-align: center
-  font-size: 60px
-  padding-top: 50px
-  margin-bottom: 20px
-  border-bottom: 2px solid #e0e0e0
-  color: $dark_blue
+.site-title
+  font-size 4em
 
-.middle
-  margin: 0 auto
+.project
+  padding 0.4em
+  cursor pointer
 
-#front
-  margin: 0 auto
-  max-width: 1000px
-  
-#output
-  display: none
-  margin: 0 auto
-  padding-top: 5px
+  .mega-octicon
+    margin 0.6em
+    float left
 
-  h3
-    text-align: center
+  &:hover
+    transition: all 1s
+    background $gray
 
-    a
-      margin-left: 15px
+  &.selected
+    transition: all 0.5s
+    background $light-gray
+    color black
 
-      span
-        font-size: 24px
+.project-details
 
-  button
-    width: 400px
-    text-align: center
+  #deploy-button
+    background $purple
+    display none
 
-    i
-      display: none
-      margin-right: 5px
+  .meta
+    overflow hidden
+    width: 95%
+    margin: 0 2.5%
 
-  #github-version
-    margin-left: 5px
+    .buttons
+      padding 1em 0
 
   pre
-    display: none
-    max-height: 400px
+    width: 95%
+    margin: 2.5%
+    overflow-y scroll
+    font-size 0.8em
+    line-height 1.4em
 
-.projects
-  text-align: left
+.404
+  margin-top 3em
 
-
-  h2
-    color: $dark_blue
-    font-size 18px
-
-  .project
-    width: 80%
-    margin: 0 auto
-    margin-bottom: 30px
-
-
-    &:hover
-      transition: all 0.5s
-      background-color: #d8d8d8
-      cursor: pointer
-
-    &.disabled
-      background-color: #d8d8d8
-      cursor: not-allowed
-
-    a
-      &:hover
-        text-decoration: none
-
-    p
-      margin: 0 0 5px 0
-
-    span
-      margin-top: 20px
-      color: #859900
-
-
-  .icon-container
-    text-align: right
-    height: 100px
-    .fa
-      margin-top: 15px
-
-.navbar-fixed-bottom
-  background: white
-
-.red
-  color: $red
-.orange
-  color: $orange
-.green
-  color: $green
-
-.thin
-  margin-left: 5px
-  margin-right: 5px
-  font-weight: 100
-
-
-@media screen and (min-width: 768px)
-  .projects
-    column-count(3)
-    
-    .project
-      display: inline-block
-      width: 100%
+.text-center
+  text-align center

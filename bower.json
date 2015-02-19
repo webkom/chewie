@@ -17,7 +17,8 @@
   ],
   "dependencies": {
     "octicons": "~2.1.2",
-    "highlightjs": "~8.0.0",
-    "jquery": "~2.1.1"
+    "jquery": "~2.1.1",
+    "pure": "~0.5.0",
+    "ansi_up": "~1.1.3"
   }
 }
