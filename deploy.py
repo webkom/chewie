@@ -10,6 +10,8 @@ import sys
 import json
 from fabric.api import env, run, cd
 
+env.abort_on_prompts = True
+
 
 class MissingProjectNameError(Exception):
     def __init__(self):
