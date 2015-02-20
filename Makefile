@@ -5,7 +5,7 @@ MOCHA = $(BIN)/_mocha
 CHEWIE = ./index.js
 
 HOSTNAME = $(shell hostname -f)
-CORRECT_HOSTNAME = abakus.no
+CORRECT_HOSTNAME ?= abakus.no
 STYL = $(shell find src/frontend/stylus -name "*.styl")
 BS = $(shell find src/frontend/stylus -name "*.styl")
 
@@ -20,6 +20,7 @@ else
 	ENV = development
 	STYLUS = $(BIN)/stylus --sourcemap --include node_modules/nib/lib < $(STYL)
 endif
+
 all: parse public/stylesheets/main.css
 
 help:

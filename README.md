@@ -13,9 +13,11 @@ cd chewie
 npm install
 gulp
 ```
+
 There has to be a JSON-file with descriptions of the projects you want to deploy.
 *chewie* will look for it on the location specified by the environment variable:
 `SERVER_CONFIG_FILE`. The file should use the following format:
+
 ```json
 {
   "<repo-name-from-github>": {
@@ -28,6 +30,10 @@ There has to be a JSON-file with descriptions of the projects you want to deploy
   }
 }
 ```
+
+### Deploy chewie with chewie
+If you want to deploy chewie on a server with another hostname than `<server>.abakus.no` expose
+the `CORRECT_HOSTNAME` environment variable in order to run `make production`.
 
 #### Prepare the projects
 All projects must have a `production` target in make. *chewie* will run 
