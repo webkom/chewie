@@ -29,12 +29,12 @@ class Deployment extends EventEmitter
     )
 
     proc.stderr.on('data', (data) ->
-      @@errors += data
+      @@stderr += data
       @@emit('stderr', data)
     )
 
     proc.on('close', (code) ->
-      @@emit('done', @@stderr.length == 0)
+      @@emit('done', code == 0)
       @@notify()
     )
 
