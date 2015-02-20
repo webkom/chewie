@@ -61,8 +61,9 @@ production: venv
 ifeq ($(ENV), production)
 	git fetch && git reset --hard origin/master
 	npm install
+	bower install
 	$(PARSE)
-	$(STYLUS)
+	$(STYLUS) > $@
 	forever restart $(PWD)/index.js
 else
 	@echo "Not in a production environment!"
