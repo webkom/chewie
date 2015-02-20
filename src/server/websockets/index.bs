@@ -1,32 +1,13 @@
-import ../deploy
-import ../notify: notifySuccess, notifyError
+import ../deploy as Deployment
 
 export handleMessages
 
-handleDeploy = (client, projectName) ->
-  stream = deploy.deployStream(projectName)
-
-  errors = ''
-
-  stream.stdout.setEncoding('utf8')
-  stream.stdout.on('data', (data) ->
-    client.emit('deploy_data', data)
-  )
-
-  stream.stderr.setEncoding('utf8')
-  stream.stderr.on('data', (data) ->
-    errors += data
-    client.emit('deploy_data', data)
-  )
-
-  stream.on('close', (code) ->
-    client.emit('deploy_done')
-
-    if errors.length
-      notifyError(projectName, 'frontend', errors)
-    else
-      notifySuccess(projectName, 'frontend')
-  )
+handleDeploy = (client, project) ->
+  deployment = new Deployment(project, { source: 'web-ui'})
+  deployment.on('stderr', (data) -> client.emit('deploy_data', data))
+  deployment.on('stdout', (data) -> client.emit('deploy_data', data))
+  deployment.on('done', (success) -> client.emit('deploy_done'))
+  deployment.run()
 
 handleMessages = (io) ->
   io.on('connection', (client) ->
