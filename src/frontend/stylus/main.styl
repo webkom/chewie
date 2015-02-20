@@ -4,6 +4,7 @@ $dark-gray = #222
 $gray = lighten($dark-gray, 30%)
 $light-gray = lighten($gray, 50%)
 $purple = #5B527F
+$white = #fafafa
 
 html
   height 100%
@@ -17,7 +18,7 @@ body
   font-family 'Lato', sans-serif
   font-weight 100
   background $dark-gray
-  color white
+  color $white
 
 h1, h2, h3, h4
   font-weight 100
@@ -77,3 +78,31 @@ h1, h2, h3, h4
 .pure-button
   &.purple
     background $purple
+
+.login
+  margin-top: 10em
+
+.form
+  font-size 1.6em
+  line-height 1.6em
+
+  .form-group
+    margin 0.8em 0
+
+  label
+    margin-right 0.4em
+
+  input
+    background $dark-gray
+    border none
+    border-bottom 2px dashed $white
+    color $white
+    font-weight 100
+    outline none
+
+    &:focus
+      border-bottom-color $gray
+
+  button
+    margin 1em
+    font-size 0.8em
