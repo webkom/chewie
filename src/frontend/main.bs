@@ -9,10 +9,15 @@ codeField = outputField.find('code')
 deployButton = projectDetails.find('#deploy-button')
 deployButtonText = deployButton.find('span')
 
-githubVersion = projectDetails.find('#github-version')
-githubVersionLink = projectDetails.find('#github-version-link')
+nameField =  projectDetails.find('.name')
+commitField = projectDetails.find('.commit>.content')
+timestampField = projectDetails.find('.timestamp>.content')
 
 deploySpinner = deployButton.find('i')
+
+$('.projects .timestamp>.content').each(() ->
+  $(@).html(moment(parseInt($(@).html())).format('DD.MM.YYYY HH:mm'))
+)
 
 socket.on('deploy_data', (data) ->
   codeField.append(ansi_up.ansi_to_html(data))
@@ -41,7 +46,19 @@ projectButtons.click((e) ->
 
   projectButtons.removeClass('selected')
   $(@).addClass('selected')
+
   projectName = $(@).data('name')
+  nameField.html(projectName)
+  if $(@).data('commit')
+    commitField.html($(@).data('commit'))
+  else
+    commitField.html('Unknown')
+
+  if $(@).data('commit')
+    timestampField.html(moment(parseInt($(@).data('timestamp'))).format('DD.MM.YYYY HH:mm') or '')
+  else
+    timestampField.html('Unknown')
+
   codeField.html('')
 
   deployButtonText.html('Deploy #{projectName}?')
@@ -50,6 +67,6 @@ projectButtons.click((e) ->
   deployButton.click((e) ->
     deploy(projectName)
   )
-  deployButton.show()
   deploySpinner.hide()
+  projectDetails.addClass('active')
 )

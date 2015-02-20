@@ -1,21 +1,28 @@
+import bluebird as Bluebird
 import chai: expect
 import mock-spawn as mSpawn
+import redis
+
+import ../config
 
 spawn = mSpawn()
 require('child_process').spawn = spawn
 Deployment = require('../deploy')
 
+Bluebird.promisifyAll(redis)
 spawn.setDefault(spawn.simple(0, 'deploying all the things'))
+
+client = redis.createClient()
+
 
 describe('Deployment', () ->
   deployment = null
 
+  beforeEach(() ->
+    deployment = new Deployment('chewie', { source: 'tests' })
+  )
+
   describe('.init()', () ->
-
-    beforeEach(() ->
-      deployment = new Deployment('chewie', { source: 'tests' })
-    )
-
     it('should set stdout to ""', () -> expect(deployment.stdout).to.equal(''))
 
     it('should set stderr to ""', () -> expect(deployment.stderr).to.equal(''))
@@ -67,6 +74,29 @@ describe('Deployment', () ->
         done()
       )
       deployment.run()
+    )
+  )
+  describe('.commit()', () ->
+    it('should return commit hash from deployment log', () ->
+      deployment.stdout = 'HEAD is now at 51567bd Add npm install as frigg task'
+      expect(deployment.commit()).to.equal('51567bd')
+    )
+  )
+
+  describe('.report()', () ->
+    it('should save project status in redis', (done) ->
+      deployment.stdout = 'HEAD is now at 51567bd Add npm install as frigg task'
+      deployment.report()
+        .then(client.selectAsync(3))
+        .then(() ->
+          client.hget('chewie:projects', 'chewie', (err, value) ->
+            if err then done(err)
+            value = JSON.parse(value)
+            expect(value.commit).to.equal('51567bd')
+            expect(value.timestamp).to.be.truthy
+            done()
+          )
+        )
     )
   )
 )

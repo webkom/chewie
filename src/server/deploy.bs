@@ -1,11 +1,19 @@
 import child_process as child
-import bluebird as Promise
+import bluebird as Bluebird
 import eventemitter3 as EventEmitter
+import redis
+
+import ./config
 import ./notify: notifySuccess, notifyError
 
 export Deployment
 
-child_process = Promise.promisifyAll(child)
+child_process = Bluebird.promisifyAll(child)
+
+Bluebird.promisifyAll(redis.RedisClient.prototype)
+Bluebird.promisifyAll(redis.Multi.prototype)
+
+client = redis.createClient(config.REDIS_PORT, config.REDIS_HOST)
 
 
 class Deployment extends EventEmitter
@@ -38,6 +46,8 @@ class Deployment extends EventEmitter
       @@success = code == 0
       @@emit('done', @@success)
       @@notify()
+      if @@success
+        @@report()
     )
 
   notify: () ->
@@ -45,3 +55,18 @@ class Deployment extends EventEmitter
       notifySuccess(@project, @options.source)
     else
       notifyError(@project, @options.source, @stderr)
+
+  commit: () ->
+    return @stdout.match(/HEAD is now at ([a-z0-9]{7})/)[1]
+
+  deploymentStatus: () ->
+    return {
+      commit: @commit()
+      timestamp: Date.now()
+    }
+
+  report: () ->
+    if config.REDIS
+      return client
+        .selectAsync(config.REDIS_DB)
+        .then(client.hsetAsync('chewie:projects', @project, JSON.stringify(@deploymentStatus())))
