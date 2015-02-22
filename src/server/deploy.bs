@@ -15,6 +15,7 @@ class Deployment extends EventEmitter
   init: (project, options) ->
     @stdout = ''
     @stderr = ''
+    @success = null
     @project = project
     @options = options or {}
 
@@ -34,12 +35,13 @@ class Deployment extends EventEmitter
     )
 
     proc.on('close', (code) ->
-      @@emit('done', code == 0)
+      @@success = code == 0
+      @@emit('done', @@success)
       @@notify()
     )
 
   notify: () ->
-    if @stderr.length == 0
+    if @success
       notifySuccess(@project, @options.source)
     else
       notifyError(@project, @options.source, @stderr)
