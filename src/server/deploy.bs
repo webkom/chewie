@@ -1,34 +1,47 @@
 import child_process as child
 import bluebird as Promise
+import eventemitter3 as EventEmitter
+import ./notify: notifySuccess, notifyError
 
-export {
-  deployRegular: deployRegular
-  deployStream: deployStream
-}
+export Deployment
 
 child_process = Promise.promisifyAll(child)
 
-python = '#{process.cwd()}/venv/bin/python'
-deployScript = '#{process.cwd()}/deploy.py'
 
-shortOutput = 'Done!'
+class Deployment extends EventEmitter
+  python: '#{process.cwd()}/venv/bin/python'
+  deployScript: '#{process.cwd()}/deploy.py'
 
-class DeployError extends Error
-  name: 'DeployError'
+  init: (project, options) ->
+    @stdout = ''
+    @stderr = ''
+    @success = null
+    @project = project
+    @options = options or {}
 
-  init: (message) ->
-    @message = message
+  run: () ->
+    proc = child_process.spawn(@python, [@deployScript, @project])
+    proc.stdout.setEncoding('utf8')
+    proc.stderr.setEncoding('utf8')
 
+    proc.stdout.on('data', (data) ->
+      @@stdout += data
+      @@emit('stdout', data)
+    )
 
-deployStream = (projectName) ->
-  return child_process.spawn(python, [deployScript, projectName])
+    proc.stderr.on('data', (data) ->
+      @@stderr += data
+      @@emit('stderr', data)
+    )
 
-deployRegular = (projectName, debug) ->
-  return child_process.execAsync('#{python} #{deployScript} #{projectName}')
-  .spread((stdout, stderr) ->
-    if stderr
-      throw new DeployError(stderr)
-    return debug ? stdout : shortOutput
-  , (err) ->
-    throw new DeployError(err.message)
-  )
+    proc.on('close', (code) ->
+      @@success = code == 0
+      @@emit('done', @@success)
+      @@notify()
+    )
+
+  notify: () ->
+    if @success
+      notifySuccess(@project, @options.source)
+    else
+      notifyError(@project, @options.source, @stderr)

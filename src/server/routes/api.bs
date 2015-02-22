@@ -2,36 +2,13 @@ import express
 import crypto
 
 import ../config
-import ../deploy
-import ../notify: notifySuccess, notifyError
+import ../deploy as Deployment
 import ./handle-error as handleError
 import ./auth-helpers as authHelpers: isAuthenticated
 
 export router
 
 router = express.Router()
-
-deployAndHandle = (projectName, debug, res) ->
-  deploy.deployRegular(projectName, debug)
-  .then((output) ->
-    res
-      .status(200)
-      .json({
-        status: 200
-        output: output
-      })
-    notifySuccess(projectName, 'webhook')
-  )
-  .catch((err) ->
-    notifyError(projectName, 'webhook', err)
-    handleError(err, res)
-  )
-
-messages = {
-  notMaster: 'Received hook from a different branch than master, nothing will be done.'
-  notStatusEvent: 'Not a status event, nothing will be done.'
-  notSuccess: 'State is not success, nothing will be done.'
-}
 
 router.post('/github', (req, res) ->
   payload = req.body
@@ -67,3 +44,22 @@ router.post('/github', (req, res) ->
         error: 'Invalid hook signature.'
       })
 )
+
+messages = {
+  notMaster: 'Received hook from a different branch than master, nothing will be done.'
+  notStatusEvent: 'Not a status event, nothing will be done.'
+  notSuccess: 'State is not success, nothing will be done.'
+}
+
+deployAndHandle = (project, debug, res) ->
+  deployment = new Deployment(project, { debug: debug source: 'webhook' })
+  deployment.on('done', (success) ->
+    if success
+      res.json({
+        status: 200
+        output: output
+      })
+    else
+      handleError(deployment.error, res)
+  )
+  deployment.run()

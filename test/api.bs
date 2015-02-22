@@ -1,7 +1,5 @@
-import should
 import chai
 import chai-spies as spies
-import assert
 import supertest as request
 
 import ../app

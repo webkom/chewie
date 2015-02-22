@@ -45,7 +45,7 @@ install: node_modules
 run: venv parse
 	ABAKUS_TOKEN=test HOOK_TOKEN=test SERVER_CONFIG_FILE=$(PWD)/example.json $(CHEWIE)
 
-test: parse
+test: venv parse
 	ABAKUS_TOKEN=test HOOK_TOKEN=test SERVER_CONFIG_FILE=$(PWD)/example.json $(ISTANBUL) cover $(MOCHA) dist/test
 
 clean:
