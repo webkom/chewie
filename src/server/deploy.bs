@@ -10,9 +10,7 @@ export Deployment
 
 child_process = Bluebird.promisifyAll(child)
 
-Bluebird.promisifyAll(redis.RedisClient.prototype)
-Bluebird.promisifyAll(redis.Multi.prototype)
-
+Bluebird.promisifyAll(redis)
 client = redis.createClient(config.REDIS_PORT, config.REDIS_HOST)
 
 
@@ -61,8 +59,10 @@ class Deployment extends EventEmitter
 
   deploymentStatus: () ->
     return {
+      project: @project
       commit: @commit()
       timestamp: Date.now()
+      success: @success
     }
 
   report: () ->
@@ -70,3 +70,4 @@ class Deployment extends EventEmitter
       return client
         .selectAsync(config.REDIS_DB)
         .then(client.hsetAsync('chewie:projects', @project, JSON.stringify(@deploymentStatus())))
+        .then(client.publish('chewie:pubsub:deployments', JSON.stringify(@deploymentStatus())))

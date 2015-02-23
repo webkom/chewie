@@ -15,8 +15,12 @@ timestampField = projectDetails.find('.timestamp>.content')
 
 deploySpinner = deployButton.find('i')
 
+currentProject = null
+
+formatTimestamp = (timestamp) -> moment(parseInt(timestamp)).format('DD.MM.YYYY HH:mm')
+
 $('.projects .timestamp>.content').each(() ->
-  $(@).html(moment(parseInt($(@).html())).format('DD.MM.YYYY HH:mm'))
+  $(@).html(formatTimestamp($(@).html()))
 )
 
 socket.on('deploy_data', (data) ->
@@ -29,6 +33,30 @@ socket.on('deploy_done', () ->
   deploySpinner.hide()
   deployButtonText.html('Done!')
 )
+
+socket.on('project_deployed', (report) ->
+  report = JSON.parse(report)
+  project = $('.projects [data-name=#{report.project}]')
+  project.data('commit', report.commit)
+  project.find('.commit>.content').html(report.commit)
+  project.data('timestamp', report.timestamp)
+  project.find('.timestamp>.content').html(formatTimestamp(report.timestamp))
+  if currentProject == report.project
+    updateProjectDetails(report.project, report.commit, report.timestamp)
+)
+
+updateProjectDetails = (project, commit, timestamp) ->
+  nameField.html(project)
+  deployButtonText.html('Deploy #{project}?')
+  if commit
+    commitField.html(commit)
+  else
+    commitField.html('Unknown')
+
+  if timestamp
+    timestampField.html(formatTimestamp(timestamp))
+  else
+    timestampField.html('Unknown')
 
 deploy = (projectName) ->
   projectButtons.addClass('disabled')
@@ -44,24 +72,14 @@ projectButtons.click((e) ->
     e.stopPropagation()
     return
 
+  currentProject = $(@).data('name')
   projectButtons.removeClass('selected')
   $(@).addClass('selected')
 
-  projectName = $(@).data('name')
-  nameField.html(projectName)
-  if $(@).data('commit')
-    commitField.html($(@).data('commit'))
-  else
-    commitField.html('Unknown')
-
-  if $(@).data('commit')
-    timestampField.html(moment(parseInt($(@).data('timestamp'))).format('DD.MM.YYYY HH:mm') or '')
-  else
-    timestampField.html('Unknown')
+  updateProjectDetails(currentProject, $(@).data('commit'), $(@).data('commit'))
 
   codeField.html('')
 
-  deployButtonText.html('Deploy #{projectName}?')
 
   deployButton.off('click')
   deployButton.click((e) ->

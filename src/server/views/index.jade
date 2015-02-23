@@ -11,9 +11,9 @@ block content
             | #{name}
           .meta
             if project.status
-              span.hash
+              span.commit
                 span.octicon.octicon-git-commit
-                | #{project.status.commit}
+                span.content #{project.status.commit}
               span.timestamp
                 span.octicon.octicon-history
                 span.content #{project.status.timestamp}

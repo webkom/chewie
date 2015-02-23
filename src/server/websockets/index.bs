@@ -1,6 +1,15 @@
+import redis
+import bluebird as Bluebird
+
+import ../config
 import ../deploy as Deployment
 
+Bluebird.promisifyAll(redis)
+redisClient = redis.createClient(config.REDIS_PORT, config.REDIS_HOST)
+
 export handleMessages
+
+redisClient.subscribe('chewie:pubsub:deployments')
 
 handleDeploy = (client, project) ->
   deployment = new Deployment(project, { source: 'web-ui'})
@@ -13,5 +22,9 @@ handleMessages = (io) ->
   io.on('connection', (client) ->
     client.on('deploy', (projectName) ->
       handleDeploy(@, projectName)
+    )
+    redisClient.on('message', (channel, message) ->
+      if channel == 'chewie:pubsub:deployments'
+        client.emit('project_deployed', message)
     )
   )
