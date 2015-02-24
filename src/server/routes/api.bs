@@ -57,7 +57,7 @@ deployAndHandle = (project, debug, res) ->
     if success
       res.json({
         status: 200
-        output: output
+        output: deployment.stdout 
       })
     else
       handleError(deployment.error, res)

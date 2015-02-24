@@ -9,10 +9,19 @@ codeField = outputField.find('code')
 deployButton = projectDetails.find('#deploy-button')
 deployButtonText = deployButton.find('span')
 
-githubVersion = projectDetails.find('#github-version')
-githubVersionLink = projectDetails.find('#github-version-link')
+nameField =  projectDetails.find('.name')
+commitField = projectDetails.find('.commit>.content')
+timestampField = projectDetails.find('.timestamp>.content')
 
 deploySpinner = deployButton.find('i')
+
+currentProject = null
+
+formatTimestamp = (timestamp) -> moment(parseInt(timestamp)).format('DD.MM.YYYY HH:mm')
+
+$('.projects .timestamp>.content').each(() ->
+  $(@).html(formatTimestamp($(@).html()))
+)
 
 socket.on('deploy_data', (data) ->
   codeField.append(ansi_up.ansi_to_html(data))
@@ -24,6 +33,30 @@ socket.on('deploy_done', () ->
   deploySpinner.hide()
   deployButtonText.html('Done!')
 )
+
+socket.on('project_deployed', (report) ->
+  report = JSON.parse(report)
+  project = $('.projects [data-name=#{report.project}]')
+  project.data('commit', report.commit)
+  project.find('.commit>.content').html(report.commit)
+  project.data('timestamp', report.timestamp)
+  project.find('.timestamp>.content').html(formatTimestamp(report.timestamp))
+  if currentProject == report.project
+    updateProjectDetails(report.project, report.commit, report.timestamp)
+)
+
+updateProjectDetails = (project, commit, timestamp) ->
+  nameField.html(project)
+  deployButtonText.html('Deploy #{project}?')
+  if commit
+    commitField.html(commit)
+  else
+    commitField.html('Unknown')
+
+  if timestamp
+    timestampField.html(formatTimestamp(timestamp))
+  else
+    timestampField.html('Unknown')
 
 deploy = (projectName) ->
   projectButtons.addClass('disabled')
@@ -39,17 +72,19 @@ projectButtons.click((e) ->
     e.stopPropagation()
     return
 
+  currentProject = $(@).data('name')
   projectButtons.removeClass('selected')
   $(@).addClass('selected')
-  projectName = $(@).data('name')
+
+  updateProjectDetails(currentProject, $(@).data('commit'), $(@).data('commit'))
+
   codeField.html('')
 
-  deployButtonText.html('Deploy #{projectName}?')
 
   deployButton.off('click')
   deployButton.click((e) ->
     deploy(projectName)
   )
-  deployButton.show()
   deploySpinner.hide()
+  projectDetails.addClass('active')
 )

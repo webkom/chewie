@@ -23,48 +23,78 @@ body
 h1, h2, h3, h4
   font-weight 100
 
-.navbar
-  background transparent
-  border none
-  min-height 25px
-
 .site-title
-  font-size 4em
+  font-weight 100
+  text-align center
+  font-size 3.5em
+
+  h2
+    margin-bottom 0.2em
 
 .project
   padding 0.4em
   cursor pointer
 
   .mega-octicon
-    margin 0.6em
+    margin 0 0.6em
     float left
 
+  h2
+    margin-bottom 0.2em
+
+  .meta
+    margin 0 1.2em 1em 1.2em
+    font-size 0.8em
+    color $gray
+
+    &>span
+      margin 0.4em
+      .octicon
+        margin 0.2em
+
   &:hover
-    transition: all 1s
+    transition all 1s
     background $gray
 
+    .meta
+      color $white
+
   &.selected
-    transition: all 0.5s
+    transition all 0.5s
     background $light-gray
     color black
 
 .project-details
+  display none
+  margin-top 2em
 
-  #deploy-button
-    background $purple
-    display none
+  h2
+    font-size 2.5em
+    margin: 0 2.5%
+    margin-bottom 0
 
   .meta
     overflow hidden
-    width: 95%
     margin: 0 2.5%
 
-    .buttons
-      padding 1em 0
+    &>span
+      margin 0.4em
+
+      .octicon
+        margin 0.2em
+
+      &:first-child
+        margin-left 0
+
+  .buttons
+    padding 4.5em 0 1em 0
+
+  &.active
+    display block
 
   pre
-    width: 95%
-    margin: 2.5%
+    width 95%
+    margin 2.5%
     overflow-y scroll
     font-size 0.8em
     line-height 1.4em
@@ -89,7 +119,7 @@ h1, h2, h3, h4
     background $purple
 
 .login
-  margin-top: 10em
+  margin-top 10em
 
 .form
   font-size 1.6em

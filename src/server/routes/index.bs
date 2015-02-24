@@ -1,13 +1,28 @@
+import bluebird as Bluebird
 import express
-import request
+import redis
 
 import ../config
 import ./auth-helpers as authHelpers: isAuthenticated
 
 export router
 
+Bluebird.promisifyAll(redis)
+
 router = express.Router()
 
 router.get('/', authHelpers.isAuthenticated, (req, res) ->
-  res.render('index', { projects: require(config.SERVER_CONFIG_FILE) })
+  client = redis.createClient(config.REDIS_PORT, config.REDIS_HOST)
+  context = { projects: require(config.SERVER_CONFIG_FILE) }
+  client.selectAsync(config.REDIS_DB)
+    .then(() -> client.hgetallAsync('chewie:projects'))
+    .then((projects) ->
+      for key, value of projects
+        context.projects[key].status = JSON.parse(value)
+      res.render('index', context)
+    )
+    .catch((err) ->
+      throw err
+      res.next(err)
+    )
 )
