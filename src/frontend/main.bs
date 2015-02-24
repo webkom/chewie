@@ -83,7 +83,7 @@ projectButtons.click((e) ->
 
   deployButton.off('click')
   deployButton.click((e) ->
-    deploy(projectName)
+    deploy(currentProject)
   )
   deploySpinner.hide()
   projectDetails.addClass('active')
