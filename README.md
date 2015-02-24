@@ -11,7 +11,7 @@ branch, and by using the web frontend.
 git clone git@github.com:webkom/chewie.git
 cd chewie
 npm install
-gulp
+forever start $PWD/index.js
 ```
 
 There has to be a JSON-file with descriptions of the projects you want to deploy.
