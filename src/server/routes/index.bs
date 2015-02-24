@@ -15,12 +15,12 @@ router.get('/', authHelpers.isAuthenticated, (req, res) ->
   client = redis.createClient(config.REDIS_PORT, config.REDIS_HOST)
   context = { projects: require(config.SERVER_CONFIG_FILE) }
   client.selectAsync(config.REDIS_DB)
-    .then(() -> client.hgetall('chewie:projects', (err, projects) ->
-      if err then res.next(err)
+    .then(() -> client.hgetallAsync('chewie:projects'))
+    .then((projects) ->
       for key, value of projects
         context.projects[key].status = JSON.parse(value)
       res.render('index', context)
-    ))
+    )
     .catch((err) ->
       throw err
       res.next(err)

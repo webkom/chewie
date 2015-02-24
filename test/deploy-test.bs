@@ -88,15 +88,14 @@ describe('Deployment', () ->
       deployment.stdout = 'HEAD is now at 51567bd Add npm install as frigg task'
       deployment.report()
         .then(client.selectAsync(3))
-        .then(() ->
-          client.hget('chewie:projects', 'chewie', (err, value) ->
-            if err then done(err)
+        .then(() -> client.hgetAsync('chewie:projects', 'chewie')
+        .then((value) ->
             value = JSON.parse(value)
             expect(value.commit).to.equal('51567bd')
             expect(value.timestamp).to.be.truthy
             done()
           )
-        )
+        ).catch(done)
     )
   )
 )

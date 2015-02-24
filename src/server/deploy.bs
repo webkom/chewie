@@ -55,7 +55,9 @@ class Deployment extends EventEmitter
       notifyError(@project, @options.source, @stderr)
 
   commit: () ->
-    return @stdout.match(/HEAD is now at ([a-z0-9]{7})/)[1]
+    match = @stdout.match(/HEAD is now at ([a-z0-9]{7})/)
+    if match
+      return match[1]
 
   deploymentStatus: () ->
     return {

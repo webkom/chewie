@@ -46,7 +46,7 @@ run: venv parse
 	ABAKUS_TOKEN=test HOOK_TOKEN=test SERVER_CONFIG_FILE=$(PWD)/example.json $(CHEWIE)
 
 test: venv parse
-	ABAKUS_TOKEN=test HOOK_TOKEN=test SERVER_CONFIG_FILE=$(PWD)/example.json $(ISTANBUL) cover $(MOCHA) dist/test
+	ABAKUS_TOKEN=test HOOK_TOKEN=test REDIS=true SERVER_CONFIG_FILE=$(PWD)/example.json $(ISTANBUL) cover $(MOCHA) dist/test
 
 clean:
 	rm -rf dist public/js public/stylesheets
