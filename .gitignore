@@ -23,6 +23,4 @@ node_modules
 
 *.css
 .environment
-dist
-public/js
-public/vendor
+src/public/vendor

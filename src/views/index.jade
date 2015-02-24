@@ -1,0 +1,41 @@
+extends layout
+
+block content
+    .projects.pure-u-1-5
+        h1.site-title chewie
+    each project, name in projects
+        if project.status
+            .project(data-name="#{name}", data-commit="#{project.status.commit}", data-timestamp="#{project.status.timestamp}")
+                h2
+                    span.mega-octicon.octicon-repo
+                    | #{name}
+                .meta
+                    if project.status
+                        span.commit
+                            span.octicon.octicon-git-commit
+                            span.content #{project.status.commit}
+                        span.timestamp
+                            span.octicon.octicon-history
+                            span.content #{project.status.timestamp}
+        else
+            .project(data-name="#{name}")
+                h2
+                    span.mega-octicon.octicon-repo
+                    | #{name}
+                .meta
+
+    .project-details.pure-u-4-5
+        h2.name
+        .meta
+            span.commit
+                span.octicon.octicon-git-commit
+                span.content
+            span.timestamp
+                span.octicon.octicon-history
+                span.content
+            span.buttons
+                a.pure-button.purple#deploy-button
+                    i.fa.fa-spinner.fa-spin
+                    span
+        pre
+            code.output

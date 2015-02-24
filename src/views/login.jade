@@ -1,0 +1,12 @@
+extends layout
+
+block content
+    .login.pure-u-1
+        form.form.text-center.pure-form-aligned(action="/auth/login" method="post" role="form")
+            .form-group
+                label(for="username") Username:
+                input(name="username" type="text")
+            .form-group
+                label(for="password") Password:
+                input(name="password" type="password")
+            button.pure-button.purple(class="btn btn-danger" type="submit") Log in

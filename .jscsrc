@@ -1,0 +1,9 @@
+{
+  "preset": "airbnb",
+  "excludeFiles": [
+    "node_modules",
+    "coverage",
+    "src/public/vendor",
+    "test/fixtures"
+  ]
+}

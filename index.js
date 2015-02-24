@@ -1,14 +1,28 @@
 #!/usr/bin/env node
+var debug = require('debug');
+var http = require('http');
+var path = require('path');
+var config = require('./src/config');
+var handleMessages = require('./src/websockets/index');
+var app = require('./src/app');
 
-require('colors');
+var server = http.Server(app);
+var io = require('socket.io')(server);
+debug = debug('chewie.abakus.no');
 
-  var chewie = require('./dist/index');
-try {
-  module.export = chewie;
-} catch (e) {
-  if (e.code == 'MODULE_NOT_FOUND') {
-    console.log('You need to run make parse'.red);
-  } else {
-    throw e;
-  }
+if (path.resolve(config.SERVER_CONFIG_FILE) !== path.normalize(config.SERVER_CONFIG_FILE)) {
+  throw new Error('SERVER_CONFIG_FILE must be an absolute path.');
 }
+
+app.set('port', process.env.PORT || 3000);
+
+server.listen(app.get('port'), function() {
+  debug('Listening on port' + server.address().port);
+});
+
+handleMessages(io);
+
+module.exports = {
+  server: server,
+  io: io
+};
