@@ -20,17 +20,12 @@ var notifySlack = function(type, text, error) {
   }
 };
 
-var notifySuccess = function(projectName, source) {
+exports.notifySuccess = function(projectName, source) {
   var text = 'Successfully deployed ' + projectName + ' (source: ' + source + ')';
   notifySlack('success', text);
 };
 
-var notifyError = function(projectName, source, error) {
+exports.notifyError = function(projectName, source, error) {
   var text = 'Failed deploying ' + projectName + ' (source: ' + source + ')';
   notifySlack('alert', text, error);
-};
-
-module.exports = {
-  notifySuccess: notifySuccess,
-  notifyError: notifyError
 };

@@ -1,9 +1,13 @@
+/* jshint expr: true */
 var Bluebird = require('bluebird');
-var expect = require('chai').expect;
+var chai = require('chai');
+var chaiAsPromised = require('chai-as-promised');
 var mSpawn = require('mock-spawn');
 var redis = Bluebird.promisifyAll(require('redis'));
 var config = require('../src/config');
 
+chai.use(chaiAsPromised);
+var expect = chai.expect;
 var spawn = mSpawn();
 require('child_process').spawn = spawn;
 
@@ -92,21 +96,26 @@ describe('Deployment', function() {
   });
 
   describe('.report()', function() {
-    it('should save project status in redis', function(done) {
+    it('should save project status in redis', function() {
       deployment.stdout = 'HEAD is now at 51567bd Add npm install as frigg task';
-      deployment
+      return deployment
         .report()
-        .then(client.selectAsync(3))
         .then(function() {
-          return client.hgetAsync('chewie:projects', 'chewie')
+          return client.selectAsync(3);
+        })
+        .then(function() {
+          return client.hgetAsync('chewie:projects', 'chewie');
         })
         .then(function(value) {
           value = JSON.parse(value);
           expect(value.commit).to.equal('51567bd');
           expect(value.timestamp).to.be.truthy;
-          done();
-        })
-        .catch(done);
+        });
+    });
+
+    it('should return an empty promise if config.REDIS is false', function() {
+      config.REDIS = false;
+      return expect(deployment.report()).to.be.fulfilled;
     });
   });
 });

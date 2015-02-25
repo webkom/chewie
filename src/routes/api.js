@@ -2,10 +2,35 @@ var express = require('express');
 var crypto = require('crypto');
 var config = require('../config');
 var Deployment = require('../Deployment');
-var handleError = require('./handle-error');
-var isAuthenticated = require('./auth-helpers').isAuthenticated;
+var handleError = require('../errors').handleError;
 
 var router = express.Router();
+
+var messages = {
+  notMaster: 'Received hook from a different branch than master, nothing will be done.',
+  notStatusEvent: 'Not a status event, nothing will be done.',
+  notSuccess: 'State is not success, nothing will be done.'
+};
+
+var deployAndHandle = function(project, debug, res) {
+  var deployment = new Deployment(project, {
+    debug: debug,
+    source: 'webhook'
+  });
+
+  deployment.on('done', function(success) {
+    if (success) {
+      res.json({
+        status: 200,
+        output: deployment.stdout
+      });
+    } else {
+      handleError(deployment.error, res);
+    }
+  });
+
+  deployment.run();
+};
 
 router.post('/github', function(req, res) {
   var payload = req.body;
@@ -39,29 +64,5 @@ router.post('/github', function(req, res) {
     });
   }
 });
-
-var messages = {
-  notMaster: 'Received hook from a different branch than master, nothing will be done.',
-  notStatusEvent: 'Not a status event, nothing will be done.',
-  notSuccess: 'State is not success, nothing will be done.'
-};
-
-var deployAndHandle = function(project, debug, res) {
-  var deployment = new Deployment(project, {
-    debug: debug,
-    source: 'webhook'
-  });
-  deployment.on('done', function(success) {
-    if (success) {
-      res.json({
-        status: 200,
-        output: deployment.stdout
-      });
-    } else {
-      handleError(deployment.error, res);
-    }
-  });
-  deployment.run();
-};
 
 module.exports = router;
