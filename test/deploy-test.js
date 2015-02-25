@@ -5,6 +5,7 @@ var chaiAsPromised = require('chai-as-promised');
 var mSpawn = require('mock-spawn');
 var redis = Bluebird.promisifyAll(require('redis'));
 var config = require('../src/config');
+var errors = require('../src/errors');
 
 chai.use(chaiAsPromised);
 var expect = chai.expect;
@@ -54,7 +55,8 @@ describe('Deployment', function() {
       deployment.on('stdout', function(data) {
         return stdout += data;
       });
-      deployment.on('done', function() {
+      deployment.on('done', function(err) {
+        expect(err).to.not.exist;
         expect(deployment.stdout).to.equal('deploying all the things');
         expect(stdout).to.equal('deploying all the things');
         done();
@@ -63,15 +65,16 @@ describe('Deployment', function() {
     });
 
     it('should emit stderr', function(done) {
-      spawn.sequence.add(spawn.simple(1, '', 'All the errors'));
+      var errorOut = 'All the errors';
+      spawn.sequence.add(spawn.simple(1, '', errorOut));
       var stderr = '';
       deployment.on('stderr', function(data) {
         return stderr += data;
       });
-      deployment.on('done', function(success) {
-        expect(deployment.stderr).to.equal('All the errors');
-        expect(stderr).to.equal('All the errors');
-        expect(success).to.be.false;
+      deployment.on('done', function(err) {
+        expect(deployment.stderr).to.equal(errorOut);
+        expect(stderr).to.equal(errorOut);
+        expect(err.message).to.equal(errorOut);
         done();
       });
       deployment.run();
@@ -80,8 +83,8 @@ describe('Deployment', function() {
     it('should report failure if the command failed', function(done) {
       spawn.sequence.add(spawn.simple(1, '', ''));
       deployment = new Deployment('chewie', { source: 'tests' });
-      deployment.on('done', function(success) {
-        expect(success).to.be.false;
+      deployment.on('done', function(err) {
+        expect(err).to.be.an.instanceof(errors.DeploymentError);
         done();
       });
       deployment.run();

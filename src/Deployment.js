@@ -6,6 +6,7 @@ var EventEmitter = require('eventemitter3');
 var redis = Bluebird.promisifyAll(require('redis'));
 var config = require('./config');
 var notify = require('./notify');
+var errors = require('./errors');
 var notifyError = notify.notifyError;
 var notifySuccess = notify.notifySuccess;
 
@@ -40,11 +41,16 @@ Deployment.prototype.run = function() {
 
   proc.on('close', function(code) {
     this.success = code === 0;
-    this.emit('done', this.success);
-    this.notify();
+
     if (this.success) {
+      this.emit('done');
       this.report();
+    } else {
+      var error = new errors.DeploymentError(this.stderr);
+      this.emit('done', error);
     }
+
+    this.notify();
   }.bind(this));
 };
 
