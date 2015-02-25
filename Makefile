@@ -23,16 +23,16 @@ run: venv
 	ABAKUS_TOKEN=test HOOK_TOKEN=test SERVER_CONFIG_FILE=$(PWD)/example.json $(CHEWIE)
 
 test:
-	ABAKUS_TOKEN=test HOOK_TOKEN=test REDIS=true SERVER_CONFIG_FILE=$(PWD)/example.json $(BIN)/istanbul cover $(BIN)/_mocha test
+	ABAKUS_TOKEN=test HOOK_TOKEN=test REDIS=true REDIS_DB=3 SERVER_CONFIG_FILE=$(PWD)/example.json $(BIN)/istanbul cover $(BIN)/_mocha test
 
 mocha:
-	ABAKUS_TOKEN=test HOOK_TOKEN=test REDIS=true SERVER_CONFIG_FILE=$(PWD)/example.json $(BIN)/mocha test
+	ABAKUS_TOKEN=test HOOK_TOKEN=test REDIS=true REDIS_DB=3 SERVER_CONFIG_FILE=$(PWD)/example.json $(BIN)/mocha test
 
 jshint: $(JS)
-	$(BIN)/jshint
+	@$(BIN)/jshint . --exclude-path .gitignore
 
 jscs: $(JS)
-	$(BIN)/jscs .
+	@$(BIN)/jscs .
 
 clean:
 	rm -rf src/public/vendor src/public/stylesheets

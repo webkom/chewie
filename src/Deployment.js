@@ -1,4 +1,6 @@
 var Bluebird = require('bluebird');
+var path = require('path');
+var util = require('util');
 var childProcess = require('child_process');
 var EventEmitter = require('eventemitter3');
 var redis = Bluebird.promisifyAll(require('redis'));
@@ -8,6 +10,8 @@ var notifyError = notify.notifyError;
 var notifySuccess = notify.notifySuccess;
 
 var client = redis.createClient(config.REDIS_PORT, config.REDIS_HOST);
+var python = path.resolve('venv', 'bin', 'python');
+var deployScript = path.resolve('deploy.py');
 
 function Deployment(project, options) {
   this.stdout = '';
@@ -16,34 +20,31 @@ function Deployment(project, options) {
   this.project = project;
   this.options = options || {};
 }
-Deployment.prototype = Object.create(EventEmitter.prototype);
-Deployment.prototype.python = process.cwd() + '/venv/bin/python';
-Deployment.prototype.deployScript = process.cwd() + '/deploy.py';
+util.inherits(Deployment, EventEmitter);
 
 Deployment.prototype.run = function() {
-  var _this = this;
-  var proc = childProcess.spawn(this.python, [this.deployScript, this.project]);
+  var proc = childProcess.spawn(python, [deployScript, this.project]);
   proc.stdout.setEncoding('utf8');
   proc.stderr.setEncoding('utf8');
 
   proc.stdout.on('data', function(data) {
-    _this.stdout += data;
-    _this.emit('stdout', data);
-  });
+    this.stdout += data;
+    this.emit('stdout', data);
+  }.bind(this));
 
   proc.stderr.on('data', function(data) {
-    _this.stderr += data;
-    _this.emit('stderr', data);
-  });
+    this.stderr += data;
+    this.emit('stderr', data);
+  }.bind(this));
 
   proc.on('close', function(code) {
-    _this.success = code === 0;
-    _this.emit('done', _this.success);
-    _this.notify();
-    if (_this.success) {
-      _this.report();
+    this.success = code === 0;
+    this.emit('done', this.success);
+    this.notify();
+    if (this.success) {
+      this.report();
     }
-  });
+  }.bind(this));
 };
 
 Deployment.prototype.notify = function() {
@@ -73,10 +74,16 @@ Deployment.prototype.deploymentStatus = function() {
 Deployment.prototype.report = function() {
   if (config.REDIS) {
     return client
-      .selectAsync(config.REDIS_DB)
-      .then(client.hsetAsync('chewie:projects', this.project, JSON.stringify(this.deploymentStatus())))
-      .then(client.publish('chewie:pubsub:deployments', JSON.stringify(this.deploymentStatus())));
+      .selectAsync(config.REDIS_DB).bind(this)
+      .then(function() {
+        return client.hsetAsync('chewie:projects', this.project, JSON.stringify(this.deploymentStatus()));
+      })
+      .then(function() {
+        return client.publishAsync('chewie:pubsub:deployments', JSON.stringify(this.deploymentStatus()));
+      });
   }
+
+  return Bluebird.resolve();
 };
 
 module.exports = Deployment;
