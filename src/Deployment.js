@@ -10,8 +10,6 @@ var notifyError = notify.notifyError;
 var notifySuccess = notify.notifySuccess;
 
 var client = redis.createClient(config.REDIS_PORT, config.REDIS_HOST);
-var python = path.resolve('venv', 'bin', 'python');
-var deployScript = path.resolve('deploy.py');
 
 function Deployment(project, options) {
   this.stdout = '';
@@ -22,8 +20,11 @@ function Deployment(project, options) {
 }
 util.inherits(Deployment, EventEmitter);
 
+Deployment.prototype.python = path.resolve('venv', 'bin', 'python');
+Deployment.prototype.deployScript = path.resolve('deploy.py');
+
 Deployment.prototype.run = function() {
-  var proc = childProcess.spawn(python, [deployScript, this.project]);
+  var proc = childProcess.spawn(this.python, [this.deployScript, this.project]);
   proc.stdout.setEncoding('utf8');
   proc.stderr.setEncoding('utf8');
 
