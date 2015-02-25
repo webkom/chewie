@@ -21,6 +21,7 @@ describe('Deployment', function() {
 
   beforeEach(function() {
     deployment = new Deployment('chewie', { source: 'tests' });
+    return client.flushallAsync();
   });
 
   describe('.init()', function() {
