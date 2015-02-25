@@ -22,7 +22,7 @@ src/public/main.css: $(STYL)
 run: venv
 	ABAKUS_TOKEN=test HOOK_TOKEN=test SERVER_CONFIG_FILE=$(PWD)/example.json $(CHEWIE)
 
-test: venv
+test:
 	ABAKUS_TOKEN=test HOOK_TOKEN=test REDIS=true SERVER_CONFIG_FILE=$(PWD)/example.json $(BIN)/istanbul cover $(BIN)/_mocha test
 
 mocha:
