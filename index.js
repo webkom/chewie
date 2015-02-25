@@ -8,7 +8,7 @@ var app = require('./src/app');
 
 var server = http.Server(app);
 var io = require('socket.io')(server);
-debug = debug('chewie.abakus.no');
+debug = debug('chewie');
 
 if (path.resolve(config.SERVER_CONFIG_FILE) !== path.normalize(config.SERVER_CONFIG_FILE)) {
   throw new Error('SERVER_CONFIG_FILE must be an absolute path.');
@@ -17,7 +17,7 @@ if (path.resolve(config.SERVER_CONFIG_FILE) !== path.normalize(config.SERVER_CON
 app.set('port', process.env.PORT || 3000);
 
 server.listen(app.get('port'), function() {
-  debug('Listening on port' + server.address().port);
+  debug('Listening on port ' + server.address().port);
 });
 
 handleMessages(io);
