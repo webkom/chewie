@@ -27,7 +27,7 @@ $('.projects .timestamp>.content').each(function() {
 socket.on('deploy_data', function(data) {
   // jscs:disable requireCamelCaseOrUpperCaseIdentifiers
   codeField.append(ansi_up.ansi_to_html(data));
-  outputField.scrollTop(outputField[0].scrollHeight);
+  window.scrollTo(0, document.body.scrollHeight);
 });
 
 socket.on('deploy_done', function() {
