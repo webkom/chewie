@@ -11,5 +11,5 @@ module.exports = {
   REDIS: process.env.REDIS,
   REDIS_HOST: process.env.REDIS_HOST || '127.0.0.1',
   REDIS_PORT: process.env.REDIS_PORT || 6379,
-  REDIS_DB: process.env.REDIS_DB || 3
+  REDIS_DB: process.env.REDIS_DB || 1
 };
