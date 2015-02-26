@@ -17,7 +17,7 @@ var handleDeploy = function(client, project) {
     return client.emit('deploy_data', data);
   });
 
-  deployment.on('done', function(success) {
+  deployment.on('done', function(err) {
     return client.emit('deploy_done');
   });
 

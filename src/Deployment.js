@@ -3,13 +3,12 @@ var path = require('path');
 var util = require('util');
 var childProcess = require('child_process');
 var EventEmitter = require('eventemitter3');
-var redis = Bluebird.promisifyAll(require('redis'));
 var config = require('./config');
 var notify = require('./notify');
+var errors = require('./errors');
+var redisHandler = require('./redis');
 var notifyError = notify.notifyError;
 var notifySuccess = notify.notifySuccess;
-
-var client = redis.createClient(config.REDIS_PORT, config.REDIS_HOST);
 
 function Deployment(project, options) {
   this.stdout = '';
@@ -40,11 +39,16 @@ Deployment.prototype.run = function() {
 
   proc.on('close', function(code) {
     this.success = code === 0;
-    this.emit('done', this.success);
-    this.notify();
+
     if (this.success) {
+      this.emit('done');
       this.report();
+    } else {
+      var error = new errors.DeploymentError(this.stderr);
+      this.emit('done', error);
     }
+
+    this.notify();
   }.bind(this));
 };
 
@@ -74,17 +78,12 @@ Deployment.prototype.deploymentStatus = function() {
 
 Deployment.prototype.report = function() {
   if (config.REDIS) {
-    return client
-      .selectAsync(config.REDIS_DB).bind(this)
-      .then(function() {
-        return client.hsetAsync('chewie:projects', this.project, JSON.stringify(this.deploymentStatus()));
-      })
-      .then(function() {
-        return client.publishAsync('chewie:pubsub:deployments', JSON.stringify(this.deploymentStatus()));
-      });
+    redisHandler
+      .reportDeployment(this.project, this.deploymentStatus())
+      .return(true);
   }
 
-  return Bluebird.resolve();
+  return Bluebird.resolve(false);
 };
 
 module.exports = Deployment;

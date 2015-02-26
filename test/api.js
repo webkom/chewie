@@ -37,9 +37,10 @@ describe('API', function() {
         .expect(403)
         .expect('Content-Type', /json/)
         .end(function(err, res) {
-          expect(err).to.be.null;
-          expect(res.body.status).to.equal(403);
-          expect(res.body.error).to.equal('Invalid hook signature.');
+          if (err) return done(err);
+          var error = res.body;
+          expect(error.statusCode).to.equal(403);
+          expect(error.message).to.equal('Invalid hook signature');
           expect(deploySpy).not.to.have.been.called;
           done();
         });
@@ -54,9 +55,10 @@ describe('API', function() {
         .expect(200)
         .expect('Content-Type', /json/)
         .end(function(err, res) {
-          expect(err).to.be.null;
-          expect(res.body.status).to.equal(200);
-          expect(res.body.error).to.equal('State is not success, nothing will be done.');
+          if (err) return done(err);
+          var error = res.body;
+          expect(error.statusCode).to.equal(200);
+          expect(error.message).to.equal('State is not success, nothing will be done');
           expect(deploySpy).not.to.have.been.called;
           done();
         });
@@ -70,9 +72,10 @@ describe('API', function() {
         .send(ghPushFixture).expect(200)
         .expect('Content-Type', /json/)
         .end(function(err, res) {
-          expect(err).to.be.null;
-          expect(res.body.status).to.equal(200);
-          expect(res.body.error).to.equal('Not a status event, nothing will be done.');
+          if (err) return done(err);
+          var error = res.body;
+          expect(error.statusCode).to.equal(200);
+          expect(error.message).to.equal('Not a status event, nothing will be done');
           expect(deploySpy).not.to.have.been.called;
           done();
         });
@@ -87,9 +90,10 @@ describe('API', function() {
         .expect(200)
         .expect('Content-Type', /json/)
         .end(function(err, res) {
-          expect(err).to.be.null;
-          expect(res.body.status).to.equal(200);
-          expect(res.body.error).to.equal('Received hook from a different branch than master, nothing will be done.');
+          if (err) return done(err);
+          var error = res.body;
+          expect(error.statusCode).to.equal(200);
+          expect(error.message).to.equal('Received hook from a different branch than master, nothing will be done');
           expect(deploySpy).not.to.have.been.called;
           done();
         });
