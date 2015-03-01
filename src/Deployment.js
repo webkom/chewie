@@ -51,9 +51,10 @@ Deployment.prototype.run = function run() {
   }
   return ssh
     .connect(sshOptions)
+    .bind(this)
     .then(function (connection) {
       return connection.exec(tasks);
-    }.bind(this))
+    })
     .spread(function (code, stdout, stderr) {
       this.success = code === 0;
 
@@ -66,7 +67,7 @@ Deployment.prototype.run = function run() {
       }
 
       this.notify();
-    }.bind(this));
+    });
 };
 
 Deployment.prototype.notify = function() {
