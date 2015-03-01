@@ -2,7 +2,7 @@ var redisHandler = require('../redis');
 var config = require('../config');
 
 exports.render = function(req, res, next) {
-  var context = { projects: require(config.SERVER_CONFIG_FILE) };
+  var context = { projects: config.PROJECTS };
 
   redisHandler.getProjects()
     .then(function(projects) {
@@ -11,7 +11,6 @@ exports.render = function(req, res, next) {
           context.projects[key].status = JSON.parse(projects[key]);
         }
       }
-
       res.render('index', context);
     })
     .catch(next);
