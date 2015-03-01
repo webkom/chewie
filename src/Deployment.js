@@ -32,7 +32,7 @@ Deployment.prototype.run = function run() {
     this.emit('stderr', data);
   }.bind(this);
 
-  tasks = [];
+  var tasks = [];
   this.projectConfig.tasks.deploy.forEach(function (task) {
     tasks.push('cd ' + this.projectConfig.path + ' && ' + task);
   }.bind(this));
