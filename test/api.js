@@ -2,6 +2,7 @@
 var chai = require('chai');
 var spies = require('chai-spies');
 var request = require('supertest');
+var Bluebird = require('bluebird');
 var app = require('../src/app');
 var Deployment = require('../src/Deployment');
 var ghPushFixture = require('./fixtures/github-push.json');
@@ -24,7 +25,8 @@ describe('API', function() {
 
     var deploySpy;
     beforeEach(function() {
-      deploySpy = chai.spy(Deployment);
+      Deployment.prototype.run = Bluebird.method(function () { return true; });
+      deploySpy = chai.spy(Deployment.prototype.run);
     });
 
     it('should deploy with a correct payload', function(done) {
@@ -38,7 +40,6 @@ describe('API', function() {
         .end(function(err, res) {
           if (err) return done(err);
           expect(res.body.status).to.equal(200);
-          expect(res.body.output).to.equal('deploying all the things');
           expect(deploySpy).to.have.been.called;
           done();
         });
