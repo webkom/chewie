@@ -1,8 +1,9 @@
 var Bluebird = require('bluebird');
 var path = require('path');
 var util = require('util');
-var childProcess = require('child_process');
+var fs = require('fs');
 var EventEmitter = require('eventemitter3');
+var ssh = require('promised-ssh');
 var config = require('./config');
 var notify = require('./notify');
 var errors = require('./errors');
@@ -15,41 +16,52 @@ function Deployment(project, options) {
   this.stderr = '';
   this.success = null;
   this.project = project;
+  this.projectConfig = config.PROJECTS[project];
   this.options = options || {};
 }
 util.inherits(Deployment, EventEmitter);
 
-Deployment.prototype.python = path.resolve('venv', 'bin', 'python');
-Deployment.prototype.deployScript = path.resolve('deploy.py');
-
-Deployment.prototype.run = function() {
-  var proc = childProcess.spawn(this.python, [this.deployScript, this.project]);
-  proc.stdout.setEncoding('utf8');
-  proc.stderr.setEncoding('utf8');
-
-  proc.stdout.on('data', function(data) {
+Deployment.prototype.run = function run() {
+  var onStdout = function onStdout(data) {
     this.stdout += data;
     this.emit('stdout', data);
-  }.bind(this));
+  }.bind(this);
 
-  proc.stderr.on('data', function(data) {
+  var onStderr = function onStderr(data) {
     this.stderr += data;
     this.emit('stderr', data);
+  }.bind(this);
+
+  tasks = [];
+  this.projectConfig.tasks.deploy.forEach(function (task) {
+    tasks.push('cd ' + this.projectConfig.path + ' && ' + task);
   }.bind(this));
 
-  proc.on('close', function(code) {
-    this.success = code === 0;
+  return ssh
+    .connect({
+      host: this.projectConfig.hostname,
+      username: this.projectConfig.user,
+      privateKey: fs.readFileSync(config.PATH_TO_PRIVATE_KEY),
+      onStdout: onStdout,
+      onStderr: onStderr,
+      debug: true
+    })
+    .then(function (connection) {
+      return connection.exec(tasks);
+    }.bind(this))
+    .spread(function (code, stdout, stderr) {
+      this.success = code === 0;
 
-    if (this.success) {
-      this.emit('done');
-      this.report();
-    } else {
-      var error = new errors.DeploymentError(this.stderr);
-      this.emit('done', error);
-    }
+      if (this.success) {
+        this.emit('done');
+        this.report();
+      } else {
+        var error = new errors.DeploymentError(this.stderr);
+        this.emit('done', error);
+      }
 
-    this.notify();
-  }.bind(this));
+      this.notify();
+    }.bind(this));
 };
 
 Deployment.prototype.notify = function() {
