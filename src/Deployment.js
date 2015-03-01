@@ -71,6 +71,7 @@ Deployment.prototype.run = function run() {
       this.success = false;
       this.emit('done', error);
       this.notify();
+      throw error;
     });
 };
 
