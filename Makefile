@@ -19,14 +19,14 @@ all: src/public/main.css
 src/public/main.css: $(STYL)
 	$(STYLUS) > $@
 
-run: 
+run:
 	ABAKUS_TOKEN=test HOOK_TOKEN=test SERVER_CONFIG_FILE=$(PWD)/example.json $(CHEWIE)
 
 test:
-	ABAKUS_TOKEN=test HOOK_TOKEN=test REDIS=true REDIS_DB=3 SERVER_CONFIG_FILE=$(PWD)/example.json $(BIN)/istanbul cover $(BIN)/_mocha test
+	SSH_PASSWORD=test ABAKUS_TOKEN=test HOOK_TOKEN=test REDIS=true REDIS_DB=3 SERVER_CONFIG_FILE=$(PWD)/example.json $(BIN)/istanbul cover $(BIN)/_mocha test
 
 mocha:
-	ABAKUS_TOKEN=test HOOK_TOKEN=test REDIS=true REDIS_DB=3 SERVER_CONFIG_FILE=$(PWD)/example.json $(BIN)/mocha test
+	SSH_PASSWORD=test ABAKUS_TOKEN=test HOOK_TOKEN=test REDIS=true REDIS_DB=3 SERVER_CONFIG_FILE=$(PWD)/example.json $(BIN)/mocha test
 
 jshint: $(JS)
 	@$(BIN)/jshint . --exclude-path .gitignore

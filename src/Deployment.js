@@ -37,15 +37,20 @@ Deployment.prototype.run = function run() {
     tasks.push('cd ' + this.projectConfig.path + ' && ' + task);
   }.bind(this));
 
+  var sshOptions = {
+    host: this.projectConfig.hostname,
+    username: this.projectConfig.user,
+    onStdout: onStdout,
+    onStderr: onStderr,
+    debug: true
+  };
+  if (config.SSH_PASSWORD) {
+    sshOptions.password = config.SSH_PASSWORD;
+  } else {
+    sshOptions.privateKey = fs.readFileSync(config.PATH_TO_PRIVATE_KEY);
+  }
   return ssh
-    .connect({
-      host: this.projectConfig.hostname,
-      username: this.projectConfig.user,
-      privateKey: fs.readFileSync(config.PATH_TO_PRIVATE_KEY),
-      onStdout: onStdout,
-      onStderr: onStderr,
-      debug: true
-    })
+    .connect(sshOptions)
     .then(function (connection) {
       return connection.exec(tasks);
     }.bind(this))
