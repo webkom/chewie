@@ -19,11 +19,11 @@ var handleDeploy = function(client, project) {
 
   deployment
     .run()
-    .then(function () {
+    .then(function() {
       return client.emit('deploy_done');
     })
-    .catch(function () {
-      return client.emit('deploy_done');
+    .catch(function(error) {
+      return client.emit('deploy_done', error);
     });
 };
 

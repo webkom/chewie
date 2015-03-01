@@ -10,14 +10,14 @@ function deploy(project, res, next) {
 
   deployment
     .run()
-    .then(function (err) {
+    .then(function() {
       res.json({
         status: 200,
         output: deployment.stdout
       });
     })
-    .catch(function (err) {
-        return next(err);
+    .catch(function(err) {
+      return next(err);
     });
 }
 

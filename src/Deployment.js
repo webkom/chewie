@@ -33,7 +33,7 @@ Deployment.prototype.run = function run() {
   }.bind(this);
 
   var tasks = [];
-  this.projectConfig.tasks.deploy.forEach(function (task) {
+  this.projectConfig.tasks.deploy.forEach(function(task) {
     tasks.push('cd ' + this.projectConfig.path + ' && ' + task);
   }.bind(this));
 
@@ -52,10 +52,10 @@ Deployment.prototype.run = function run() {
   return ssh
     .connect(sshOptions)
     .bind(this)
-    .then(function (connection) {
+    .then(function(connection) {
       return connection.exec(tasks);
     })
-    .spread(function (code, stdout, stderr) {
+    .spread(function(code, stdout, stderr) {
       this.success = code === 0;
 
       if (this.success) {
@@ -67,7 +67,7 @@ Deployment.prototype.run = function run() {
       }
 
       this.notify();
-    }).catch(function (error) {
+    }).catch(function(error) {
       this.success = false;
       this.emit('done', error);
       this.notify();
