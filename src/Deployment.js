@@ -67,6 +67,10 @@ Deployment.prototype.run = function run() {
       }
 
       this.notify();
+    }).catch(function (error) {
+      this.success = false;
+      this.emit('done', error);
+      this.notify();
     });
 };
 
