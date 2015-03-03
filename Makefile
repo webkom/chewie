@@ -23,10 +23,10 @@ run:
 	ABAKUS_TOKEN=test HOOK_TOKEN=test SERVER_CONFIG_FILE=$(PWD)/example.json $(CHEWIE)
 
 test:
-	SSH_PASSWORD=test ABAKUS_TOKEN=test HOOK_TOKEN=test REDIS=true REDIS_DB=3 SERVER_CONFIG_FILE=$(PWD)/example.json $(BIN)/istanbul cover $(BIN)/_mocha test
+	PATH_TO_PRIVATE_KEY=$(PWD)/LICENSE BAKUS_TOKEN=test HOOK_TOKEN=test REDIS=true REDIS_DB=3 SERVER_CONFIG_FILE=$(PWD)/example.json $(BIN)/istanbul cover $(BIN)/_mocha test
 
 mocha:
-	SSH_PASSWORD=test ABAKUS_TOKEN=test HOOK_TOKEN=test REDIS=true REDIS_DB=3 SERVER_CONFIG_FILE=$(PWD)/example.json $(BIN)/mocha test
+	PATH_TO_PRIVATE_KEY=$(PWD)/LICENSE ABAKUS_TOKEN=test HOOK_TOKEN=test REDIS=true REDIS_DB=3 SERVER_CONFIG_FILE=$(PWD)/example.json $(BIN)/mocha test
 
 jshint: $(JS)
 	@$(BIN)/jshint . --exclude-path .gitignore
