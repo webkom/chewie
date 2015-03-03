@@ -2,6 +2,7 @@
 var Bluebird = require('bluebird');
 var chai = require('chai');
 var chaiAsPromised = require('chai-as-promised');
+var ssh = require('promised-ssh');
 var redis = Bluebird.promisifyAll(require('redis'));
 var config = require('../src/config');
 var errors = require('../src/errors');
@@ -9,6 +10,7 @@ var errors = require('../src/errors');
 chai.use(chaiAsPromised);
 var expect = chai.expect;
 
+ssh.connect = ssh.connectMock;
 var Deployment = require('../src/Deployment');
 var client = redis.createClient();
 
@@ -35,13 +37,26 @@ describe('Deployment', function() {
     });
   });
 
-  xdescribe('.run()', function() {
+  describe('.run()', function() {
 
     it('should run the deployment', function() {
-      return deployment.run();
+      ssh.setMockOptions({ commands: {} });
+      return deployment
+        .run()
+        .then(function() {
+          expect(deployment.success).to.be.true;
+        });
     });
 
     it('should emit stdout', function() {
+      ssh.setMockOptions({
+        commands: {
+          'cd /home/chewie/chewie && make production': {
+            stdout: 'deploying all the things'
+          }
+        }
+      });
+
       var stdout = '';
       deployment.on('stdout', function(data) {
         return stdout += data;
@@ -57,6 +72,13 @@ describe('Deployment', function() {
 
     it('should emit stderr', function() {
       var errorOut = 'All the errors';
+      ssh.setMockOptions({
+        commands: {
+          'cd /home/chewie/chewie && make production': {
+            stderr: errorOut
+          }
+        }
+      });
       var stderr = '';
       deployment.on('stderr', function(data) {
         return stderr += data;
@@ -69,11 +91,13 @@ describe('Deployment', function() {
         });
     });
 
-    it('should report failure if the command failed', function() {
+    it('should handle failure if the deployment fails', function() {
+      ssh.setMockOptions({ failConnect: true });
+
       return deployment
         .run()
         .catch(function(err) {
-          expect(err).to.be.an.instanceof(errors.DeploymentError);
+          expect(err).to.be.an.instanceof(ssh.errors.ConnectionError);
         });
     });
   });
@@ -86,8 +110,9 @@ describe('Deployment', function() {
   });
 
   describe('.report()', function() {
-    xit('should save project status in redis', function() {
+    it('should save project status in redis', function() {
       deployment.stdout = 'HEAD is now at 51567bd Add npm install as frigg task';
+      deployment.success = true;
       return deployment
         .report()
         .then(function() {

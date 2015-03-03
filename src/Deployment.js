@@ -17,7 +17,7 @@ function Deployment(project, options) {
   this.success = null;
   this.project = project;
   this.projectConfig = config.PROJECTS[project];
-  this.options = options || {};
+  this.options = options;
 }
 util.inherits(Deployment, EventEmitter);
 
@@ -37,41 +37,30 @@ Deployment.prototype.run = function run() {
     tasks.push('cd ' + this.projectConfig.path + ' && ' + task);
   }.bind(this));
 
-  var sshOptions = {
-    host: this.projectConfig.hostname,
-    username: this.projectConfig.user,
-    onStdout: onStdout,
-    onStderr: onStderr,
-    debug: true
-  };
-  if (config.SSH_PASSWORD) {
-    sshOptions.password = config.SSH_PASSWORD;
-  } else {
-    sshOptions.privateKey = fs.readFileSync(config.PATH_TO_PRIVATE_KEY);
-  }
   return ssh
-    .connect(sshOptions)
+    .connect({
+      host: this.projectConfig.hostname,
+      username: this.projectConfig.user,
+      onStdout: onStdout,
+      onStderr: onStderr,
+      debug: true,
+      privateKey: fs.readFileSync(config.PATH_TO_PRIVATE_KEY)
+    })
     .bind(this)
     .then(function(connection) {
       return connection.exec(tasks);
     })
     .spread(function(code, stdout, stderr) {
       this.success = code === 0;
-
-      if (this.success) {
-        this.emit('done');
-        this.report();
-      } else {
-        var error = new errors.DeploymentError(this.stderr);
-        this.emit('done', error);
-      }
-
-      this.notify();
+      this.emit('done');
     }).catch(function(error) {
       this.success = false;
       this.emit('done', error);
-      this.notify();
       throw error;
+    })
+    .finally(function() {
+      this.report();
+      this.notify();
     });
 };
 
@@ -101,7 +90,7 @@ Deployment.prototype.deploymentStatus = function() {
 
 Deployment.prototype.report = function() {
   if (config.REDIS) {
-    redisHandler
+    return redisHandler
       .reportDeployment(this.project, this.deploymentStatus())
       .return(true);
   }

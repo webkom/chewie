@@ -5,9 +5,12 @@ var config = require('./config');
 var client = redis.createClient(config.REDIS_PORT, config.REDIS_HOST);
 
 exports.reportDeployment = function(projectName, deploymentStatus) {
-  return client.selectAsync(config.REDIS_DB).bind(this)
+  return client
+    .selectAsync(config.REDIS_DB)
+    .bind(this)
     .then(function() {
-      return client.hsetAsync('chewie:projects', projectName, JSON.stringify(deploymentStatus));
+      if (deploymentStatus.success)
+        return client.hsetAsync('chewie:projects', projectName, JSON.stringify(deploymentStatus));
     })
     .then(function() {
       return client.publishAsync('chewie:pubsub:deployments', JSON.stringify(deploymentStatus));
