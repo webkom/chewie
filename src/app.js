@@ -54,7 +54,6 @@ if (process.env.NODE_ENV === 'production') {
   app.use(raven.middleware.express(process.env.RAVEN_DSN));
 }
 
-
 app.use('/', index);
 app.use('/api', api);
 
