@@ -49,7 +49,7 @@ if (config.PASSPORT_STRATEGY) {
   app.use('/auth', auth);
 }
 
-if (process.env.NODE_ENV == 'production') {
+if (process.env.NODE_ENV === 'production') {
   var raven = require('raven');
   app.use(raven.middleware.express(process.env.RAVEN_DSN));
 }
