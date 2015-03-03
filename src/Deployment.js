@@ -1,7 +1,7 @@
 var Bluebird = require('bluebird');
 var path = require('path');
 var util = require('util');
-var fs = require('fs');
+var fs = Bluebird.promisifyAll(require('fs'));
 var EventEmitter = require('eventemitter3');
 var ssh = require('promised-ssh');
 var config = require('./config');
@@ -36,17 +36,19 @@ Deployment.prototype.run = function run() {
   this.projectConfig.tasks.deploy.forEach(function(task) {
     tasks.push('cd ' + this.projectConfig.path + ' && ' + task);
   }.bind(this));
-
-  return ssh
-    .connect({
-      host: this.projectConfig.hostname,
-      username: this.projectConfig.user,
-      onStdout: onStdout,
-      onStderr: onStderr,
-      debug: true,
-      privateKey: fs.readFileSync(config.PATH_TO_PRIVATE_KEY)
-    })
+  return fs
+    .readFileAsync(config.PATH_TO_PRIVATE_KEY)
     .bind(this)
+    .then(function(key) {
+      return ssh.connect({
+        host: this.projectConfig.hostname,
+        username: this.projectConfig.user,
+        onStdout: onStdout,
+        onStderr: onStderr,
+        debug: true,
+        privateKey: key
+      });
+    })
     .then(function(connection) {
       return connection.exec(tasks);
     })
