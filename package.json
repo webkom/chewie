@@ -37,7 +37,7 @@
     "passport-abakus": "^0.2.0",
     "passport-memcached": "^0.2.0",
     "raven": "^0.7.2",
-    "promised-ssh": "^0.1.0",
+    "promised-ssh": "^0.2.0",
     "redis": "^0.12.1",
     "request": "^2.40.0",
     "slack-notify": "^0.1.4",
