@@ -16,7 +16,7 @@ config = {
   REDIS_HOST: process.env.REDIS_HOST || '127.0.0.1',
   REDIS_PORT: process.env.REDIS_PORT || 6379,
   REDIS_DB: process.env.REDIS_DB || 1,
-  PATH_TO_PRIVATE_KEY: process.env.PATH_TO_PRIVATE_KEY || path.join(process.env.HOME || process.env.HOMEPATH || process.env.USERPROFILE, '.ssh/id_rsa'),
+  PATH_TO_PRIVATE_KEY: process.env.PATH_TO_PRIVATE_KEY || path.join(process.env.HOME || process.env.HOMEPATH || process.env.USERPROFILE, '.ssh/id_rsa')
 };
 
 if (process.env.DEFAULT_TASKS) {

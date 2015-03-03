@@ -25,7 +25,6 @@ describe('API', function() {
 
     var deploySpy;
     beforeEach(function() {
-      //Deployment.prototype.run = Bluebird.method(function() { return true; });
       deploySpy = chai.spy(Deployment.prototype.run);
     });
 
