@@ -17,11 +17,14 @@ var handleDeploy = function(client, project) {
     return client.emit('deploy_data', data);
   });
 
-  deployment.on('done', function(err) {
-    return client.emit('deploy_done');
-  });
-
-  deployment.run();
+  deployment
+    .run()
+    .then(function() {
+      return client.emit('deploy_done');
+    })
+    .catch(function(error) {
+      return client.emit('deploy_done', error);
+    });
 };
 
 var handleMessages = function(io) {

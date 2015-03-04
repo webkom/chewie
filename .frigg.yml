@@ -1,7 +1,6 @@
 tasks:
   - npm install
   - npm test
-  - flake8
   - node_modules/.bin/istanbul report cobertura
   - make jshint
   - make jscs

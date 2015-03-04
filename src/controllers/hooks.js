@@ -8,18 +8,15 @@ function deploy(project, res, next) {
     source: 'webhook'
   });
 
-  deployment.on('done', function(err) {
-    if (err) {
-      return next(err);
-    }
-
-    res.json({
-      status: 200,
-      output: deployment.stdout
-    });
-  });
-
-  deployment.run();
+  deployment
+    .run()
+    .then(function() {
+      res.json({
+        status: 200,
+        output: deployment.stdout
+      });
+    })
+    .catch(next);
 }
 
 exports.github = function(req, res, next) {

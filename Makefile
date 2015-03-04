@@ -19,14 +19,14 @@ all: src/public/main.css
 src/public/main.css: $(STYL)
 	$(STYLUS) > $@
 
-run: venv
+run:
 	ABAKUS_TOKEN=test HOOK_TOKEN=test SERVER_CONFIG_FILE=$(PWD)/example.json $(CHEWIE)
 
 test:
-	ABAKUS_TOKEN=test HOOK_TOKEN=test REDIS=true REDIS_DB=3 SERVER_CONFIG_FILE=$(PWD)/example.json $(BIN)/istanbul cover $(BIN)/_mocha test
+	PATH_TO_PRIVATE_KEY=$(PWD)/LICENSE HOOK_TOKEN=test REDIS=true REDIS_DB=3 SERVER_CONFIG_FILE=$(PWD)/example.json $(BIN)/istanbul cover $(BIN)/_mocha test
 
 mocha:
-	ABAKUS_TOKEN=test HOOK_TOKEN=test REDIS=true REDIS_DB=3 SERVER_CONFIG_FILE=$(PWD)/example.json $(BIN)/mocha test
+	PATH_TO_PRIVATE_KEY=$(PWD)/LICENSE HOOK_TOKEN=test REDIS=true REDIS_DB=3 SERVER_CONFIG_FILE=$(PWD)/example.json $(BIN)/mocha test
 
 jshint: $(JS)
 	@$(BIN)/jshint . --exclude-path .gitignore
@@ -46,10 +46,6 @@ src/public/vendor: bower.json
 
 node_modules: package.json
 	npm install
-
-venv:
-	virtualenv venv
-	venv/bin/pip install -r requirements.txt
 
 server:
 	@DEBUG=chewie supervisor index.js

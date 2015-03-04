@@ -2,18 +2,16 @@
 var Bluebird = require('bluebird');
 var chai = require('chai');
 var chaiAsPromised = require('chai-as-promised');
-var mSpawn = require('mock-spawn');
+var ssh = require('promised-ssh');
 var redis = Bluebird.promisifyAll(require('redis'));
 var config = require('../src/config');
 var errors = require('../src/errors');
 
 chai.use(chaiAsPromised);
 var expect = chai.expect;
-var spawn = mSpawn();
-require('child_process').spawn = spawn;
 
+ssh.connect = ssh.connectMock;
 var Deployment = require('../src/Deployment');
-spawn.setDefault(spawn.simple(0, 'deploying all the things'));
 var client = redis.createClient();
 
 describe('Deployment', function() {
@@ -37,58 +35,77 @@ describe('Deployment', function() {
       expect(deployment.project).to.equal('chewie');
       expect(deployment.options.source).to.equal('tests');
     });
+
+    it('should throw error if project is not defined in the projects list', function() {
+      var create = function() {
+        return new Deployment('unknown', { source: 'tests' });
+      };
+      expect(create).to.throw(errors.UnknownProjectError);
+    });
   });
 
   describe('.run()', function() {
-    beforeEach(function() {
-      deployment = new Deployment('src', { source: 'tests' });
+
+    it('should run the deployment', function() {
+      ssh.setMockOptions({ commands: {} });
+      return deployment
+        .run()
+        .then(function() {
+          expect(deployment.success).to.be.true;
+        });
     });
 
-    it('should run the test', function(done) {
-      deployment.on('done', function() {
-        return done();
+    it('should emit stdout', function() {
+      ssh.setMockOptions({
+        commands: {
+          'cd /home/chewie/chewie && make production': {
+            stdout: 'deploying all the things'
+          }
+        }
       });
-      deployment.run();
-    });
 
-    it('should emit stdout', function(done) {
       var stdout = '';
       deployment.on('stdout', function(data) {
         return stdout += data;
       });
-      deployment.on('done', function(err) {
-        expect(err).to.not.exist;
-        expect(deployment.stdout).to.equal('deploying all the things');
-        expect(stdout).to.equal('deploying all the things');
-        done();
-      });
-      deployment.run();
+
+      return deployment
+        .run()
+        .then(function() {
+          expect(deployment.stdout).to.equal('deploying all the things');
+          expect(stdout).to.equal('deploying all the things');
+        });
     });
 
-    it('should emit stderr', function(done) {
+    it('should emit stderr', function() {
       var errorOut = 'All the errors';
-      spawn.sequence.add(spawn.simple(1, '', errorOut));
+      ssh.setMockOptions({
+        commands: {
+          'cd /home/chewie/chewie && make production': {
+            stderr: errorOut
+          }
+        }
+      });
       var stderr = '';
       deployment.on('stderr', function(data) {
         return stderr += data;
       });
-      deployment.on('done', function(err) {
-        expect(deployment.stderr).to.equal(errorOut);
-        expect(stderr).to.equal(errorOut);
-        expect(err.message).to.equal(errorOut);
-        done();
-      });
-      deployment.run();
+      return deployment
+        .run()
+        .then(function() {
+          expect(deployment.stderr).to.equal(errorOut);
+          expect(stderr).to.equal(errorOut);
+        });
     });
 
-    it('should report failure if the command failed', function(done) {
-      spawn.sequence.add(spawn.simple(1, '', ''));
-      deployment = new Deployment('chewie', { source: 'tests' });
-      deployment.on('done', function(err) {
-        expect(err).to.be.an.instanceof(errors.DeploymentError);
-        done();
-      });
-      deployment.run();
+    it('should handle failure if the deployment fails', function() {
+      ssh.setMockOptions({ failConnect: true });
+
+      return deployment
+        .run()
+        .catch(function(err) {
+          expect(err).to.be.an.instanceof(ssh.errors.ConnectionError);
+        });
     });
   });
 
@@ -102,6 +119,7 @@ describe('Deployment', function() {
   describe('.report()', function() {
     it('should save project status in redis', function() {
       deployment.stdout = 'HEAD is now at 51567bd Add npm install as frigg task';
+      deployment.success = true;
       return deployment
         .report()
         .then(function() {
