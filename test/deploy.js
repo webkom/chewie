@@ -35,6 +35,13 @@ describe('Deployment', function() {
       expect(deployment.project).to.equal('chewie');
       expect(deployment.options.source).to.equal('tests');
     });
+
+    it('should throw error if project is not defined in the projects list', function() {
+      var create = function() {
+        return new Deployment('unknown', { source: 'tests' });
+      };
+      expect(create).to.throw(errors.UnknownProjectError);
+    });
   });
 
   describe('.run()', function() {

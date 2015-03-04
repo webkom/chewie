@@ -16,8 +16,12 @@ function Deployment(project, options) {
   this.stderr = '';
   this.success = null;
   this.project = project;
-  this.projectConfig = config.PROJECTS[project];
   this.options = options;
+  if (project in config.PROJECTS) {
+    this.projectConfig = config.PROJECTS[project];
+  } else {
+    throw new errors.UnknownProjectError(project);
+  }
 }
 util.inherits(Deployment, EventEmitter);
 

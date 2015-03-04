@@ -28,6 +28,13 @@ function DeploymentError(message) {
 util.inherits(DeploymentError, Error);
 exports.DeploymentError = DeploymentError;
 
+function UnknownProjectError(project) {
+  this.message = 'There is no configuration for project "' + project + '"';
+  this.statusCode = 200;
+}
+util.inherits(UnknownProjectError, Error);
+exports.UnknownProjectError = UnknownProjectError;
+
 exports.handleError = function(res, err, statusCode) {
   if (!statusCode) {
     statusCode = err.statusCode ? err.statusCode : 500;
