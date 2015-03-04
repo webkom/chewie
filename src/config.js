@@ -23,7 +23,7 @@ if (process.env.DEFAULT_TASKS) {
   config.DEFAULT_TASKS = JSON.parse(process.env.DEFAULT_TASKS);
 } else {
   config.DEFAULT_TASKS = {
-    deploy: ['make production'],
+    deploy: ['git fetch', 'git reset --hard origin/master', 'make production'],
     restart: ['make restart'],
     start: ['make start'],
     stop: ['make stop']
