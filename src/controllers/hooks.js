@@ -16,9 +16,7 @@ function deploy(project, res, next) {
         output: deployment.stdout
       });
     })
-    .catch(function(err) {
-      return next(err);
-    });
+    .catch(next);
 }
 
 exports.github = function(req, res, next) {
