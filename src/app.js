@@ -49,13 +49,13 @@ if (config.PASSPORT_STRATEGY) {
   app.use('/auth', auth);
 }
 
+app.use('/', index);
+app.use('/api', api);
+
 if (process.env.NODE_ENV === 'production') {
   var raven = require('raven');
   app.use(raven.middleware.express(process.env.RAVEN_DSN));
 }
-
-app.use('/', index);
-app.use('/api', api);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
