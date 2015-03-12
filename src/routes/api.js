@@ -1,13 +1,12 @@
 var express = require('express');
+var errorHandler = require('express-error-middleware');
 var hooks = require('../controllers/hooks');
-var errors = require('../errors');
 
 var router = express.Router();
 
 router.post('/github', hooks.github);
 
-router.use(function(err, req, res, next) {
-  errors.handleError(res, err);
-});
+router.use(errorHandler.NotFoundMiddleware);
+router.use(errorHandler.ApiErrorsMiddleware);
 
 module.exports = router;

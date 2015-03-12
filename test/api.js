@@ -38,7 +38,6 @@ describe('API', function() {
         .expect('Content-Type', /json/)
         .end(function(err, res) {
           if (err) return done(err);
-          expect(res.body.status).to.equal(200);
           expect(deploySpy).to.have.been.called;
           done();
         });
@@ -60,7 +59,6 @@ describe('API', function() {
         .end(function(err, res) {
           if (err) return done(err);
           var error = res.body;
-          expect(error.statusCode).to.equal(403);
           expect(error.message).to.equal('Invalid hook signature');
           expect(deploySpy).not.to.have.been.called;
           done();
@@ -78,7 +76,6 @@ describe('API', function() {
         .end(function(err, res) {
           if (err) return done(err);
           var error = res.body;
-          expect(error.statusCode).to.equal(200);
           expect(error.message).to.equal('State is not success, nothing will be done');
           expect(deploySpy).not.to.have.been.called;
           done();
@@ -96,7 +93,6 @@ describe('API', function() {
         .end(function(err, res) {
           if (err) return done(err);
           var error = res.body;
-          expect(error.statusCode).to.equal(200);
           expect(error.message).to.equal('Not a status event, nothing will be done');
           expect(deploySpy).not.to.have.been.called;
           done();
@@ -114,7 +110,6 @@ describe('API', function() {
         .end(function(err, res) {
           if (err) return done(err);
           var error = res.body;
-          expect(error.statusCode).to.equal(200);
           expect(error.message).to.equal('Received hook from a different branch than master, nothing will be done');
           expect(deploySpy).not.to.have.been.called;
           done();
