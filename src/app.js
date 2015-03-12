@@ -1,4 +1,5 @@
 var express = require('express');
+var errorHandler = require('express-error-middleware');
 var flash = require('express-flash');
 var session = require('cookie-session');
 var path = require('path');
@@ -57,26 +58,7 @@ if (process.env.NODE_ENV === 'production') {
   app.use(raven.middleware.express(process.env.RAVEN_DSN));
 }
 
-// catch 404 and forward to error handler
-app.use(function(req, res, next) {
-  var err = new Error('Not Found');
-  err.status = 404;
-  err.template = 'error/404';
-  next(err);
-});
-
-app.use(function(err, req, res, next) {
-  var template;
-  if (process.env.NODE_ENV === 'production') {
-    template = 'error/production';
-  } else {
-    template = 'error/debug';
-  }
-  res.status(err.status || 500);
-  res.render(err.template || template, {
-    message: err.message,
-    error: err
-  });
-});
+app.use(errorHandler.NotFoundMiddleware);
+app.use(errorHandler.ErrorsMiddleware);
 
 module.exports = app;

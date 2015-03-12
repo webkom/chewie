@@ -9,42 +9,28 @@ exports.ConfigurationError = ConfigurationError;
 
 function InvalidHookSignature() {
   this.message = 'Invalid hook signature';
-  this.statusCode = 403;
+  this.status = 403;
 }
 util.inherits(InvalidHookSignature, Error);
 exports.InvalidHookSignature = InvalidHookSignature;
 
 function IgnoreHookError(message) {
   this.message = message || 'Hook ignored';
-  this.statusCode = 200;
+  this.status = 200;
 }
 util.inherits(IgnoreHookError, Error);
 exports.IgnoreHookError = IgnoreHookError;
 
 function DeploymentError(message) {
   this.message = message || 'Something went wrong during deployment';
-  this.statusCode = 500;
+  this.status = 500;
 }
 util.inherits(DeploymentError, Error);
 exports.DeploymentError = DeploymentError;
 
 function UnknownProjectError(project) {
   this.message = 'There is no configuration for project "' + project + '"';
-  this.statusCode = 200;
+  this.status = 200;
 }
 util.inherits(UnknownProjectError, Error);
 exports.UnknownProjectError = UnknownProjectError;
-
-exports.handleError = function(res, err, statusCode) {
-  if (!statusCode) {
-    statusCode = err.statusCode ? err.statusCode : 500;
-  }
-
-  return res
-    .status(statusCode)
-    .json(err.payload || {
-      name: err.name,
-      statusCode: statusCode,
-      message: err.message
-    });
-};
