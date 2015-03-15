@@ -35,14 +35,12 @@ function loadProjectConfigurations() {
   if (!fs.existsSync(configFilePath)) {
     throw new ConfigurationError('Can\'t find a file at the given SERVER_CONFIG_FILE-path');
   }
-  projects = require(configFilePath);
-  for (var project in projects) {
-    if (projects[project].hasOwnProperty('tasks')) {
-      _.merge(projects[project].tasks, config.DEFAULT_TASKS);
-    } else {
-      projects[project].tasks = config.DEFAULT_TASKS;
-    }
-  }
+  var projects = require(configFilePath);
+  _.each(projects, function(project) {
+    project.tasks = project.tasks || {};
+    _.defaults(project.tasks, config.DEFAULT_TASKS);
+  });
+
   return projects;
 }
 
