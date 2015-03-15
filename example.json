@@ -3,5 +3,13 @@
     "hostname": "chewie.abakus.no",
     "user": "chewie",
     "path": "/home/chewie/chewie"
+  },
+  "differentProject": {
+    "hostname": "different.abakus.no",
+    "user": "different",
+    "path": "/home/different/project",
+    "tasks": {
+      "deploy": ["make deploy"]
+    }
   }
 }
