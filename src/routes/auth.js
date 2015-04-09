@@ -4,12 +4,12 @@ var router = express.Router();
 
 router.route('/login')
   .get(function(req, res) {
-    res.render('login');
+    res.render('login', { error: req.flash('error') });
   })
   .post(passport.authenticate('local', {
     successRedirect: '/',
     failureRedirect: '/auth/login',
-    failureFlash: true
+    failureFlash: 'Invalid username or password.'
   }));
 
 router.get('/logout', function(req, res) {

@@ -9,4 +9,8 @@ block content
       .form-group
         label(for="password") Password:
         input(name="password" type="password")
+
+      if error
+        p.feedback=error
+
       button.pure-button.purple(class="btn btn-danger" type="submit") Log in
