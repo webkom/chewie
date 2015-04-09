@@ -1,6 +1,6 @@
 var express = require('express');
 var errorHandler = require('express-error-middleware');
-var flash = require('express-flash');
+var flash = require('connect-flash');
 var session = require('cookie-session');
 var path = require('path');
 var logging = require('morgan');
@@ -20,6 +20,7 @@ app.set('views', path.join(__dirname, './views'));
 app.set('view engine', 'jade');
 app.set('trust proxy', true);
 
+app.use(flash());
 app.use(express.static(path.join(__dirname, './public')));
 app.use(logging('dev'));
 app.use(bodyParser.json());
