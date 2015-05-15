@@ -11,13 +11,18 @@ config = {
   SLACK_URL: process.env.SLACK_URL,
   SLACK_CHANNEL: process.env.SLACK_CHANNEL,
   PASSPORT_STRATEGY: process.env.PASSPORT_STRATEGY,
-  PASSPORT_STRATEGY_OPTIONS: process.env.PASSPORT_STRATEGY_OPTIONS || {},
   REDIS: process.env.REDIS,
   REDIS_HOST: process.env.REDIS_HOST || '127.0.0.1',
   REDIS_PORT: process.env.REDIS_PORT || 6379,
   REDIS_DB: process.env.REDIS_DB || 1,
   PATH_TO_PRIVATE_KEY: process.env.PATH_TO_PRIVATE_KEY || path.join(process.env.HOME || process.env.HOMEPATH || process.env.USERPROFILE, '.ssh/id_rsa')
 };
+
+if (process.env.PASSPORT_STRATEGY_OPTIONS) {
+  config.PASSPORT_STRATEGY_OPTIONS = JSON.parse(process.env.PASSPORT_STRATEGY_OPTIONS);
+} else {
+  config.PASSPORT_STRATEGY_OPTIONS = {};
+}
 
 if (process.env.DEFAULT_TASKS) {
   config.DEFAULT_TASKS = JSON.parse(process.env.DEFAULT_TASKS);
