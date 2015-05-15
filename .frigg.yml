@@ -8,3 +8,6 @@ tasks:
 coverage:
   path: coverage/cobertura-coverage.xml
   parser: cobertura
+
+services:
+  - redis-server
