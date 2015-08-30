@@ -1,9 +1,9 @@
 var Bluebird = require('bluebird');
-var redis = Bluebird.promisifyAll(require('redis'));
+var createClient = require('../redis').createClient;
 var config = require('../config');
 var Deployment = require('../Deployment');
 
-var redisClient = redis.createClient(config.REDIS_PORT, config.REDIS_HOST);
+var redisClient = createClient();
 redisClient.subscribe('chewie:pubsub:deployments');
 
 var handleDeploy = function(client, project) {
