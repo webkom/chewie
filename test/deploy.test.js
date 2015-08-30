@@ -40,6 +40,7 @@ describe('Deployment', function() {
       var create = function() {
         return new Deployment('unknown', { source: 'tests' });
       };
+
       expect(create).to.throw(errors.UnknownProjectError);
     });
   });
@@ -90,6 +91,7 @@ describe('Deployment', function() {
       deployment.on('stderr', function(data) {
         return stderr += data;
       });
+
       return deployment
         .run()
         .then(function() {

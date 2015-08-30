@@ -41,6 +41,7 @@ function loadProjectConfigurations() {
   if (!fs.existsSync(configFilePath)) {
     throw new ConfigurationError('Can\'t find a file at the given SERVER_CONFIG_FILE-path');
   }
+
   var projects = require(configFilePath);
   _.each(projects, function(project) {
     project.tasks = project.tasks || {};

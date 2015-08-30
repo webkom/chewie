@@ -6,5 +6,5 @@
     "src/public/vendor",
     "test/fixtures"
   ],
-  "requirePaddingNewLinesAfterBlocks": null
+  "requireCamelCaseOrUpperCaseIdentifiers": "ignoreProperties"
 }

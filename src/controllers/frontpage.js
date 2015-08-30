@@ -11,6 +11,7 @@ exports.render = function(req, res, next) {
           context.projects[key].status = JSON.parse(projects[key]);
         }
       }
+
       res.render('index', context);
     })
     .catch(next);

@@ -23,6 +23,7 @@ function Deployment(project, options) {
     throw new errors.UnknownProjectError(project);
   }
 }
+
 util.inherits(Deployment, EventEmitter);
 
 Deployment.prototype.run = function run() {

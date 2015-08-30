@@ -48,6 +48,7 @@ if (config.PASSPORT_STRATEGY) {
     res.locals.authenticated = req.isAuthenticated();
     next();
   });
+
   app.use('/auth', auth);
 }
 
