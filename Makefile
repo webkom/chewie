@@ -34,6 +34,8 @@ jshint: $(JS)
 jscs: $(JS)
 	@$(BIN)/jscs .
 
+lint: jshint jscs
+	
 clean:
 	rm -rf src/public/vendor src/public/stylesheets
 
