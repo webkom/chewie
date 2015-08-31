@@ -93,4 +93,6 @@ projectButtons.click(function(e) {
   });
   deploySpinner.hide();
   projectDetails.addClass('active');
+
+  document.body.scrollTop = 0;
 });
