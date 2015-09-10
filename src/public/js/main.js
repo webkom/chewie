@@ -91,6 +91,7 @@ projectButtons.click(function(e) {
   deployButton.click(function(e) {
     deploy(currentProject);
   });
+
   deploySpinner.hide();
   projectDetails.addClass('active');
 
