@@ -30,7 +30,7 @@
     "eventemitter3": "^1.1.1",
     "express": "^4.13.3",
     "express-error-middleware": "^1.0.0",
-    "gulp-nodemon": "^1.0.4",
+    "gulp-nodemon": "^2.0.4",
     "gulp-supervisor": "^0.1.2",
     "jade": "^1.6.0",
     "lodash": "^3.3.1",
