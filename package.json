@@ -41,7 +41,7 @@
     "passport-memcached": "^0.2.0",
     "promised-ssh": "^0.2.0",
     "raven": "^0.7.2",
-    "redis": "^0.12.1",
+    "redis": "^2.2.4",
     "request": "^2.40.0",
     "slack-notify": "^0.1.4",
     "socket.io": "^1.1.0",
