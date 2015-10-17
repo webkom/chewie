@@ -26,7 +26,7 @@
     "connect-flash": "^0.1.1",
     "cookie-parser": "^1.3.2",
     "cookie-session": "^1.0.2",
-    "debug": "^1.0.4",
+    "debug": "^2.2.0",
     "eventemitter3": "^0.1.6",
     "express": "^4.8.5",
     "express-error-middleware": "^1.0.0",
