@@ -1,4 +1,4 @@
-/* jshint expr: true */
+/* eslint no-unused-expressions: 0 */
 var Bluebird = require('bluebird');
 var chai = require('chai');
 var chaiAsPromised = require('chai-as-promised');
@@ -46,7 +46,6 @@ describe('Deployment', function() {
   });
 
   describe('.run()', function() {
-
     it('should run the deployment', function() {
       ssh.setMockOptions({ commands: {} });
       return deployment
@@ -67,7 +66,7 @@ describe('Deployment', function() {
 
       var stdout = '';
       deployment.on('stdout', function(data) {
-        return stdout += data;
+        return stdout + data;
       });
 
       return deployment
@@ -89,7 +88,7 @@ describe('Deployment', function() {
       });
       var stderr = '';
       deployment.on('stderr', function(data) {
-        return stderr += data;
+        return stderr + data;
       });
 
       return deployment
@@ -131,9 +130,9 @@ describe('Deployment', function() {
           return client.hgetAsync('chewie:projects', 'chewie');
         })
         .then(function(value) {
-          value = JSON.parse(value);
-          expect(value.commit).to.equal('51567bd');
-          expect(value.timestamp).to.be.truthy;
+          var parsed = JSON.parse(value);
+          expect(parsed.commit).to.equal('51567bd');
+          expect(parsed.timestamp).to.be.truthy;
         });
     });
 

@@ -6,7 +6,7 @@ var ConfigurationError = require('./errors').ConfigurationError;
 
 checkEnv(['SERVER_CONFIG_FILE', 'HOOK_TOKEN']);
 
-config = {
+var config = {
   HOOK_TOKEN: process.env.HOOK_TOKEN,
   SLACK_URL: process.env.SLACK_URL,
   SLACK_CHANNEL: process.env.SLACK_CHANNEL,

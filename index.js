@@ -1,7 +1,6 @@
 #!/usr/bin/env node
 var debug = require('debug');
 var http = require('http');
-var config = require('./src/config');
 var handleMessages = require('./src/websockets/index');
 var app = require('./src/app');
 

@@ -1,8 +1,7 @@
-/* jshint expr: true */
+/* eslint no-unused-expressions: 0 */
 var chai = require('chai');
 var spies = require('chai-spies');
 var request = require('supertest');
-var Bluebird = require('bluebird');
 var app = require('../src/app');
 var Deployment = require('../src/Deployment');
 var ghPushFixture = require('./fixtures/github-push.json');

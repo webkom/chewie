@@ -17,7 +17,23 @@ var deploySpinner = deployButton.find('i');
 var currentProject = null;
 
 var formatTimestamp = function(timestamp) {
-  return moment(parseInt(timestamp)).format('DD.MM.YYYY HH:mm');
+  return moment(parseInt(timestamp, 10)).format('DD.MM.YYYY HH:mm');
+};
+
+var updateProjectDetails = function(project, commit, timestamp) {
+  nameField.html(project);
+  deployButtonText.html('Deploy ' + project + '?');
+  if (commit) {
+    commitField.html(commit);
+  } else {
+    commitField.html('Unknown');
+  }
+
+  if (timestamp) {
+    timestampField.html(formatTimestamp(timestamp));
+  } else {
+    timestampField.html('Unknown');
+  }
 };
 
 $('.projects .timestamp>.content').each(function() {
@@ -37,32 +53,16 @@ socket.on('deploy_done', function() {
 });
 
 socket.on('project_deployed', function(report) {
-  report = JSON.parse(report);
-  var project = $('.projects [data-name=' + report.project + ']');
-  project.data('commit', report.commit);
-  project.find('.commit>.content').html(report.commit);
-  project.data('timestamp', report.timestamp);
-  project.find('.timestamp>.content').html(formatTimestamp(report.timestamp));
-  if (currentProject === report.project) {
-    updateProjectDetails(report.project, report.commit, report.timestamp);
+  var parsedReport = JSON.parse(report);
+  var project = $('.projects [data-name=' + parsedReport.project + ']');
+  project.data('commit', parsedReport.commit);
+  project.find('.commit>.content').html(parsedReport.commit);
+  project.data('timestamp', parsedReport.timestamp);
+  project.find('.timestamp>.content').html(formatTimestamp(parsedReport.timestamp));
+  if (currentProject === parsedReport.project) {
+    updateProjectDetails(parsedReport.project, parsedReport.commit, parsedReport.timestamp);
   }
 });
-
-var updateProjectDetails = function(project, commit, timestamp) {
-  nameField.html(project);
-  deployButtonText.html('Deploy ' + project + '?');
-  if (commit) {
-    commitField.html(commit);
-  } else {
-    commitField.html('Unknown');
-  }
-
-  if (timestamp) {
-    timestampField.html(formatTimestamp(timestamp));
-  } else {
-    timestampField.html('Unknown');
-  }
-};
 
 var deploy = function(projectName) {
   projectButtons.addClass('disabled');
@@ -88,7 +88,7 @@ projectButtons.click(function(e) {
   codeField.html('');
 
   deployButton.off('click');
-  deployButton.click(function(e) {
+  deployButton.click(function() {
     deploy(currentProject);
   });
 

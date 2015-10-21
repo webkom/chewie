@@ -1,5 +1,4 @@
 var Bluebird = require('bluebird');
-var path = require('path');
 var util = require('util');
 var fs = Bluebird.promisifyAll(require('fs'));
 var EventEmitter = require('eventemitter3');
