@@ -12,10 +12,19 @@ var expect = chai.expect;
 
 ssh.connect = ssh.connectMock;
 var Deployment = require('../src/Deployment');
-var client = redis.createClient();
 
 describe('Deployment', function() {
   var deployment;
+  var client;
+
+  before(function(done) {
+    client = redis.createClient();
+    client.on('error', done);
+    client.on('ready', function() {
+      client.removeListener('error', done);
+      done();
+    });
+  });
 
   beforeEach(function() {
     deployment = new Deployment('chewie', { source: 'tests' });
@@ -66,7 +75,7 @@ describe('Deployment', function() {
 
       var stdout = '';
       deployment.on('stdout', function(data) {
-        return stdout + data;
+        stdout += data;
       });
 
       return deployment
@@ -88,7 +97,7 @@ describe('Deployment', function() {
       });
       var stderr = '';
       deployment.on('stderr', function(data) {
-        return stderr + data;
+        stderr += data;
       });
 
       return deployment
