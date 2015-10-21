@@ -52,7 +52,7 @@
     "chai-as-promised": "^4.2.0",
     "chai-spies": "^0.5.1",
     "istanbul": "^0.3.2",
-    "jscs": "^1.11.3",
+    "jscs": "^2.3.5",
     "jshint": "^2.6.0",
     "mocha": "^1.21.4",
     "mock-spawn": "^0.2.3",
