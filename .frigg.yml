@@ -1,9 +1,7 @@
 tasks:
   - npm install
-  - npm test
-  - node_modules/.bin/istanbul report cobertura
-  - make jshint
-  - make jscs
+  - make test
+  - make lint
 
 coverage:
   path: coverage/cobertura-coverage.xml

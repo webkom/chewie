@@ -1,4 +1,4 @@
-/* jshint expr: true */
+/* eslint-disable no-unused-expressions */
 var Bluebird = require('bluebird');
 var chai = require('chai');
 var chaiAsPromised = require('chai-as-promised');
@@ -12,10 +12,19 @@ var expect = chai.expect;
 
 ssh.connect = ssh.connectMock;
 var Deployment = require('../src/Deployment');
-var client = redis.createClient();
 
 describe('Deployment', function() {
   var deployment;
+  var client;
+
+  before(function(done) {
+    client = redis.createClient();
+    client.on('error', done);
+    client.on('ready', function() {
+      client.removeListener('error', done);
+      done();
+    });
+  });
 
   beforeEach(function() {
     deployment = new Deployment('chewie', { source: 'tests' });
@@ -46,7 +55,6 @@ describe('Deployment', function() {
   });
 
   describe('.run()', function() {
-
     it('should run the deployment', function() {
       ssh.setMockOptions({ commands: {} });
       return deployment
@@ -67,7 +75,7 @@ describe('Deployment', function() {
 
       var stdout = '';
       deployment.on('stdout', function(data) {
-        return stdout += data;
+        stdout += data;
       });
 
       return deployment
@@ -89,7 +97,7 @@ describe('Deployment', function() {
       });
       var stderr = '';
       deployment.on('stderr', function(data) {
-        return stderr += data;
+        stderr += data;
       });
 
       return deployment
@@ -131,9 +139,9 @@ describe('Deployment', function() {
           return client.hgetAsync('chewie:projects', 'chewie');
         })
         .then(function(value) {
-          value = JSON.parse(value);
-          expect(value.commit).to.equal('51567bd');
-          expect(value.timestamp).to.be.truthy;
+          var parsed = JSON.parse(value);
+          expect(parsed.commit).to.equal('51567bd');
+          expect(parsed.timestamp).to.be.truthy;
         });
     });
 

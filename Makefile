@@ -5,6 +5,7 @@ HOSTNAME = $(shell hostname -f)
 CORRECT_HOSTNAME ?= abakus.no
 STYL = $(shell find src/public/stylus -name "*.styl")
 JS = $(shell find src/ -name "*.js")
+ESLINT = $(BIN)/eslint
 
 ifeq ($(findstring $(CORRECT_HOSTNAME),$(HOSTNAME)),$(CORRECT_HOSTNAME))
 	ENV = production
@@ -28,14 +29,9 @@ test:
 mocha:
 	PATH_TO_PRIVATE_KEY=$(PWD)/LICENSE HOOK_TOKEN=test REDIS=true REDIS_DB=3 SERVER_CONFIG_FILE=$(PWD)/example.json $(BIN)/mocha test
 
-jshint: $(JS)
-	@$(BIN)/jshint . --exclude-path .gitignore
+lint:
+	$(ESLINT) . --ignore-path .gitignore
 
-jscs: $(JS)
-	@$(BIN)/jscs .
-
-lint: jshint jscs
-	
 clean:
 	rm -rf src/public/vendor src/public/stylesheets
 
@@ -63,4 +59,4 @@ else
 	@echo "Not in a production environment!"
 endif
 
-.PHONY: test install clean production all
+.PHONY: lint test install clean production all

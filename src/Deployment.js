@@ -1,5 +1,4 @@
 var Bluebird = require('bluebird');
-var path = require('path');
 var util = require('util');
 var fs = Bluebird.promisifyAll(require('fs'));
 var EventEmitter = require('eventemitter3');
@@ -57,12 +56,12 @@ Deployment.prototype.run = function run() {
     .then(function(connection) {
       return connection.exec(tasks);
     })
-    .spread(function(code, stdout, stderr) {
-      this.success = code === 0;
+    .spread(function(stdout, stderr) {
+      this.success = true;
       this.emit('done');
-    }).catch(function(error) {
+    })
+    .catch(function(error) {
       this.success = false;
-      this.emit('done', error);
       throw error;
     })
     .finally(function() {

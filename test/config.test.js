@@ -1,4 +1,3 @@
-var path = require('path');
 var chai = require('chai');
 var config = require('../src/config');
 chai.should();

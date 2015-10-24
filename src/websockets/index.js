@@ -1,6 +1,4 @@
-var Bluebird = require('bluebird');
 var createClient = require('../redis').createClient;
-var config = require('../config');
 var Deployment = require('../Deployment');
 
 var redisClient = createClient();

@@ -6,7 +6,6 @@ var path = require('path');
 var logging = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-var request = require('request');
 var passport = require('passport');
 var passportMemcached = require('passport-memcached');
 var config = require('./config');
