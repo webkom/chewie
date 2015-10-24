@@ -1,4 +1,4 @@
-/* eslint no-unused-expressions: 0 */
+/* eslint-disable no-unused-expressions */
 var chai = require('chai');
 var spies = require('chai-spies');
 var request = require('supertest');

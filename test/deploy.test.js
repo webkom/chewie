@@ -1,4 +1,4 @@
-/* eslint no-unused-expressions: 0 */
+/* eslint-disable no-unused-expressions */
 var Bluebird = require('bluebird');
 var chai = require('chai');
 var chaiAsPromised = require('chai-as-promised');
