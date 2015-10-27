@@ -57,7 +57,7 @@
     "eslint-config-webkom": "^0.4.0",
     "istanbul": "0.4.0",
     "mocha": "2.3.3",
-    "mock-spawn": "0.2.3",
+    "mock-spawn": "0.2.6",
     "rewire": "2.3.4",
     "should": "7.1.1",
     "supertest": "1.1.0"
