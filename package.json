@@ -22,7 +22,7 @@
     "body-parser": "1.8.1",
     "bower": "1.4.1",
     "check-env": "1.2.0",
-    "colors": "1.0.3",
+    "colors": "1.1.2",
     "connect-flash": "0.1.1",
     "cookie-parser": "1.4.0",
     "cookie-session": "1.2.0",
