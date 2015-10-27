@@ -19,7 +19,7 @@
   "homepage": "https://github.com/webkom/chewie",
   "dependencies": {
     "bluebird": "3.0.0",
-    "body-parser": "1.8.1",
+    "body-parser": "1.14.1",
     "bower": "1.4.1",
     "check-env": "1.2.0",
     "colors": "1.1.2",
