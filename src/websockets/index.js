@@ -5,7 +5,7 @@ var redisClient = createClient();
 redisClient.subscribe('chewie:pubsub:deployments');
 
 var handleDeploy = function(client, project) {
-  var deployment = new Deployment(project, {source: 'web-ui'});
+  var deployment = new Deployment(project, { source: 'web-ui' });
 
   deployment.on('stderr', function(data) {
     return client.emit('deploy_data', data);
