@@ -48,7 +48,7 @@ node_modules: package.json
 server:
 	@DEBUG=chewie supervisor index.js
 
-production: venv
+production:
 ifeq ($(ENV), production)
 	git fetch && git reset --hard origin/master
 	npm install
