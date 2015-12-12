@@ -37,10 +37,10 @@ clean:
 
 install:
 	npm install
-	bower install
+	$(BIN)/bower install
 
 src/public/vendor: bower.json
-	bower install
+	$(BIN)/bower install
 
 node_modules: package.json
 	npm install
@@ -52,7 +52,7 @@ production: venv
 ifeq ($(ENV), production)
 	git fetch && git reset --hard origin/master
 	npm install
-	bower install
+	$(BIN)/bower install
 	make all
 	forever restart $(PWD)/index.js
 else
