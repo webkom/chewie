@@ -19,6 +19,8 @@ var config = {
   PATH_TO_PRIVATE_KEY: process.env.PATH_TO_PRIVATE_KEY || path.join(process.env.HOME || process.env.HOMEPATH || process.env.USERPROFILE, '.ssh/id_rsa')
 };
 
+config.PATH_TO_PUBLIC_KEY = process.env.PATH_TO_PUBLIC_KEY || config.PATH_TO_PRIVATE_KEY + '.pub';
+
 if (process.env.PASSPORT_STRATEGY_OPTIONS) {
   config.PASSPORT_STRATEGY_OPTIONS = JSON.parse(process.env.PASSPORT_STRATEGY_OPTIONS);
 } else {

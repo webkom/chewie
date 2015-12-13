@@ -1,6 +1,9 @@
 /* eslint-disable no-unused-expressions */
+var Promise = require('bluebird');
+var fs = Promise.promisifyAll(require('fs'));
 var chai = require('chai');
 var spies = require('chai-spies');
+var sinon = require('sinon');
 var request = require('supertest');
 var app = require('../src/app');
 var Deployment = require('../src/Deployment');
@@ -111,6 +114,21 @@ describe('API', function() {
           var error = res.body;
           expect(error.message).to.equal('Received hook from a different branch than master, nothing will be done');
           expect(deploySpy).not.to.have.been.called;
+          done();
+        });
+    });
+  });
+
+  describe('/public_key', function() {
+    it('should return the content of the public key', function(done) {
+      sinon.stub(fs, 'readFileAsync').returns(Promise.resolve('chewies public key'));
+      request(app)
+        .get('/api/public-key')
+        .expect(200)
+        .expect('Content-Type', 'text/plain; charset=utf-8')
+        .end(function(err, res) {
+          if (err) return done(err);
+          expect(res.text).to.equal('chewies public key');
           done();
         });
     });

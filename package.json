@@ -60,6 +60,7 @@
     "mock-spawn": "0.2.6",
     "rewire": "2.5.0",
     "should": "7.1.1",
+    "sinon": "^1.17.2",
     "supertest": "1.1.0"
   }
 }
