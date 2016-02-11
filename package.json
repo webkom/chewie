@@ -45,7 +45,7 @@
     "request": "2.69.0",
     "slack-notify": "0.1.5",
     "socket.io": "1.4.5",
-    "stylus": "0.52.4"
+    "stylus": "0.53.0"
   },
   "devDependencies": {
     "babel-eslint": "^4.1.3",
