@@ -10,7 +10,7 @@ debug = debug('chewie');
 
 app.set('port', process.env.PORT || 3000);
 
-server.listen(app.get('port'), function() {
+server.listen(app.get('port'), 'localhost', function() {
   debug('Listening on port ' + server.address().port);
 });
 
