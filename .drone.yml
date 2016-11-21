@@ -1,0 +1,13 @@
+pipeline:
+  tests:
+    image: node:4
+    when:
+      event: push
+    commands:
+      - npm install -q
+      - make test
+      - make lint
+
+services:
+  cache:
+    image: redis
